@@ -4,6 +4,7 @@ import Bricks from "./components/Bricks";
 import Blocks from "./components/Blocks";
 import Clouds from "./components/Clouds";
 import Logo from "./components/Logo";
+import Text from "./components/Text";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -20,6 +21,7 @@ const Wrapper = styled.div`
 function App() {
 	return (
 		<Wrapper>
+			<Text />
 			<Logo />
 			<Clouds />
 			<Blocks />

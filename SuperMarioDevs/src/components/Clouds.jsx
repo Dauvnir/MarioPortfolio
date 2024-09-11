@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 		height: auto;
 		width: 7rem;
 		image-rendering: optimizeQuality;
-		margin-top: 2rem;
+		margin-top: 3rem;
 		margin-right: 0rem;
 	}
 `;
