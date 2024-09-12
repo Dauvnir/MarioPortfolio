@@ -1,5 +1,6 @@
 import styled from "styled-components";
-
+import Warning from "./Warning";
+import PropTypes from "prop-types";
 const Wrapper = styled.div`
 	width: 100%;
 	height: 35%;
@@ -81,29 +82,36 @@ const Wrapper = styled.div`
 	}
 `;
 
-const Logo = () => {
+const Logo = ({ showWarning = false, handlerShowWarning }) => {
 	return (
-		<Wrapper>
-			<div id="logoBlock">
-				<div className="dotContainer">
-					<div></div>
-					<div></div>
+		<>
+			<Wrapper>
+				<div id="logoBlock">
+					<div className="dotContainer">
+						<div></div>
+						<div></div>
+					</div>
+					<div className="dotContainer dotContainerBottom">
+						<div></div>
+						<div></div>
+					</div>
+					<p>
+						<span id="super">SUPER</span>
+						<br />
+						<span id="marioLogo">MARIO DEVS.</span>
+					</p>
 				</div>
-				<div className="dotContainer dotContainerBottom">
-					<div></div>
-					<div></div>
-				</div>
-				<p>
-					<span id="super">SUPER</span>
-					<br />
-					<span id="marioLogo">MARIO DEVS.</span>
+				<p id="signature">
+					<span>@2024 PATRYK POLAK</span>
 				</p>
-			</div>
-			<p id="signature">
-				<span>@2024 PATRYK POLAK</span>
-			</p>
-		</Wrapper>
+			</Wrapper>
+			{showWarning && <Warning handlerShowWarning={handlerShowWarning} />}
+		</>
 	);
 };
 
+Logo.propTypes = {
+	showWarning: PropTypes.bool.isRequired,
+	handlerShowWarning: PropTypes.func.isRequired,
+};
 export default Logo;

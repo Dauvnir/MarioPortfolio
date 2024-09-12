@@ -1,5 +1,17 @@
-import styled from "styled-components";
-import coin from "../assets/coin.png";
+import styled, { keyframes } from "styled-components";
+import coin from "../assets/mariocoin.gif";
+import PropTypes from "prop-types";
+
+const fadeInOut = keyframes`
+  0% {
+    opacity: 0.01  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.01;
+  }
+`;
 const Wrapper = styled.div`
 	width: 100%;
 	height: 100%;
@@ -18,7 +30,7 @@ const Wrapper = styled.div`
 		width: auto;
 		height: 33%;
 		display: grid;
-		grid-template-columns: 6rem 5rem 5rem 5rem;
+		grid-template-columns: 7rem 5rem 5rem 4rem;
 		grid-template-rows: 2rem 2rem;
 		grid-template-areas:
 			"mario   empty   world   time"
@@ -51,7 +63,7 @@ const Wrapper = styled.div`
 			justify-content: center;
 			align-items: center;
 			img {
-				width: 24px;
+				width: 16px;
 				height: auto;
 				image-rendering: optimizeQuality;
 			}
@@ -93,6 +105,7 @@ const Wrapper = styled.div`
 				font-weight: 400;
 				font-style: normal;
 				white-space: nowrap;
+				animation: ${fadeInOut} 4s infinite;
 			}
 		}
 	}
@@ -104,7 +117,7 @@ const Wrapper = styled.div`
 		flex-grow: 1;
 	}
 `;
-const Text = () => {
+const Text = ({ handlerShowWarning }) => {
 	return (
 		<Wrapper>
 			<div id="grid">
@@ -124,7 +137,7 @@ const Text = () => {
 				<span id="timeNumber">000</span>
 			</div>
 			<div id="button">
-				<button>
+				<button onClick={handlerShowWarning}>
 					<span>Tap Anywhere to Start</span>
 				</button>
 			</div>
@@ -134,5 +147,7 @@ const Text = () => {
 		</Wrapper>
 	);
 };
-
+Text.propTypes = {
+	handlerShowWarning: PropTypes.func.isRequired,
+};
 export default Text;
