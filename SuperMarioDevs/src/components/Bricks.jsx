@@ -4,33 +4,56 @@ import block from "../assets/block.png";
 
 const BLOCK_SIZE = 45;
 const SMALL_BLOCK_HEIGHT = 20;
+const BLOCK_SIZE_MEDIA_WIDTH400 = 55;
+const SMALL_BLOCK_HEIGHT_MEDIA_WIDTH400 = 25;
 
 const Wrap = styled.div`
 	width: 100vw;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, ${BLOCK_SIZE}px);
-	grid-template-rows: ${BLOCK_SIZE}px ${SMALL_BLOCK_HEIGHT}px;
 	grid-auto-flow: column;
 	overflow: hidden;
 	grid-gap: 0;
 	padding: 0;
 	margin: 0;
-	#fullBlock {
-		width: ${BLOCK_SIZE}px;
-		height: ${BLOCK_SIZE}px;
-		background-image: url(${block});
-		background-size: cover;
-		background-position: center top;
-		grid-row: 1;
+	flex-shrink: 0;
+	div {
+		#fullBlock {
+			background-image: url(${block});
+			background-size: cover;
+			background-position: center top;
+			grid-row: 1;
+		}
+		#block {
+			background-image: url(${block});
+			background-position: top;
+			background-size: cover;
+			grid-row: 2;
+		}
 	}
-	#block {
-		width: ${BLOCK_SIZE}px;
-		height: ${SMALL_BLOCK_HEIGHT}px;
-		background-image: url(${block});
-		background-position: top;
-		background-size: cover;
-		grid-row: 2;
+	@media (min-width: 1px) {
+		grid-template-columns: repeat(auto-fill, ${BLOCK_SIZE}px);
+		grid-template-rows: ${BLOCK_SIZE}px ${SMALL_BLOCK_HEIGHT}px;
+		#fullBlock {
+			width: ${BLOCK_SIZE}px;
+			height: ${BLOCK_SIZE}px;
+		}
+		#block {
+			width: ${BLOCK_SIZE}px;
+			height: ${SMALL_BLOCK_HEIGHT}px;
+		}
 	}
+	/* @media (min-width: 400px) {
+		grid-template-columns: repeat(auto-fill, ${BLOCK_SIZE_MEDIA_WIDTH400}px);
+		grid-template-rows: ${BLOCK_SIZE_MEDIA_WIDTH400}px ${SMALL_BLOCK_HEIGHT_MEDIA_WIDTH400}px;
+		#fullBlock {
+			width: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
+			height: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
+		}
+		#block {
+			width: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
+			height: ${SMALL_BLOCK_HEIGHT_MEDIA_WIDTH400}px;
+		}
+	} */
 `;
 // function logIt(text = "Blocks number:", arg) {
 // 	console.log(text, arg);

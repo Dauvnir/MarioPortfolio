@@ -7,11 +7,15 @@ const Wrapper = styled.div`
 	position: absolute;
 	top: 2rem;
 	left: 0;
-	z-index: 2;
+	z-index: 3;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	@media (orientation: landscape) {
+		top: 4.5rem;
+	}
+
 	#logoBlock {
 		border-top: 2px solid white;
 		border-left: 2px solid white;
@@ -23,6 +27,7 @@ const Wrapper = styled.div`
 		position: relative;
 		z-index: 2;
 		margin: auto auto 0 auto;
+
 		.dotContainer {
 			z-index: 3;
 			position: relative;
@@ -68,6 +73,7 @@ const Wrapper = styled.div`
 			}
 			#marioLogo {
 				font-size: 26px;
+				white-space: nowrap;
 			}
 		}
 	}
@@ -79,6 +85,7 @@ const Wrapper = styled.div`
 		font-size: 13px;
 		text-align: right;
 		margin: 0 auto auto auto;
+		white-space: nowrap;
 	}
 `;
 

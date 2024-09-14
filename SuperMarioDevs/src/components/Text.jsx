@@ -35,6 +35,17 @@ const Wrapper = styled.div`
 		grid-template-areas:
 			"mario   empty   world   time"
 			"points  coins   level   timeNumber";
+		@media (orientation: landscape) {
+			grid-template-columns: 8rem 6rem 6rem 5rem;
+			font-size: 1.1rem;
+			column-gap: 0.25rem;
+		}
+		@media (min-height: 800px) {
+			font-size: 1.25rem;
+			grid-template-columns: 7.5rem 5.5rem 6rem 6rem;
+			row-gap: 0.4rem;
+			margin-top: 2rem;
+		}
 		#mario {
 			grid-area: mario;
 			justify-self: left;
@@ -86,9 +97,7 @@ const Wrapper = styled.div`
 		width: 100%;
 		height: 33.3%;
 		padding-inline: 0.75rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+
 		button {
 			background: none;
 			width: 100%;
@@ -98,7 +107,7 @@ const Wrapper = styled.div`
 			cursor: pointer;
 			text-align: center;
 			padding: 0;
-
+			position: relative;
 			span {
 				font-size: 1rem;
 				font-family: "Press Start 2P", system-ui;
@@ -106,6 +115,15 @@ const Wrapper = styled.div`
 				font-style: normal;
 				white-space: nowrap;
 				animation: ${fadeInOut} 4s infinite;
+				@media (orientation: landscape) {
+					width: 100%;
+					position: absolute;
+					bottom: 10px;
+					left: 0;
+				}
+				@media (min-height: 700px) {
+					font-size: 1.25rem;
+				}
 			}
 		}
 	}
@@ -113,8 +131,24 @@ const Wrapper = styled.div`
 		width: 100%;
 		height: auto;
 		padding-inline: 0.75rem;
-		margin-top: 1rem;
 		flex-grow: 1;
+		p {
+			font-size: 1.25rem;
+			margin-top: 0rem;
+			@media (min-height: 700px) {
+				margin-top: 1rem;
+			}
+			@media (min-height: 750px) {
+				margin-top: 2rem;
+			}
+			@media (min-height: 800px) {
+				font-size: 1.25rem;
+				margin-top: 3rem;
+			}
+			@media (orientation: landscape) {
+				font-size: 1rem;
+			}
+		}
 	}
 `;
 const Text = ({ handlerShowWarning }) => {
@@ -138,11 +172,11 @@ const Text = ({ handlerShowWarning }) => {
 			</div>
 			<div id="button">
 				<button onClick={handlerShowWarning}>
-					<span>Tap Anywhere to Start</span>
+					<span>Tap Here to Start</span>
 				</button>
 			</div>
 			<div id="highscore">
-				<span>TOP-000000</span>
+				<p>TOP-000000</p>
 			</div>
 		</Wrapper>
 	);

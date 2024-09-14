@@ -3,6 +3,10 @@ import mountains from "../assets/mountains2.png";
 import pipeline from "../assets/pipe.png";
 import bowser from "../assets/bowser.png";
 import mario from "../assets/mario.png";
+
+const MARIO_MEDIA_WIDTH_400 = 55;
+const MARIO = 40;
+
 const Wrap = styled.div`
 	height: 10rem;
 	width: 100vw;
@@ -32,11 +36,21 @@ const Wrap = styled.div`
 			position: absolute;
 			bottom: 0;
 			left: 3rem;
-			width: 2.5rem;
 			height: auto;
 			z-index: 2;
 			image-rendering: optimizeQuality;
 		}
+
+		@media (min-width: 1px) {
+			#mario {
+				width: ${MARIO}px;
+			}
+		}
+		/* @media (min-width: 400px) {
+			#mario {
+				width: ${MARIO_MEDIA_WIDTH_400}px;
+			}
+		} */
 	}
 	#bowserAndPipe {
 		height: 100%;

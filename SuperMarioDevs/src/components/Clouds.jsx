@@ -16,6 +16,10 @@ const Wrapper = styled.div`
 		image-rendering: optimizeQuality;
 		margin-left: -3rem;
 		margin-top: 4rem;
+		@media (orientation: landscape) {
+			margin-bottom: -5rem;
+			margin-top: 0;
+		}
 	}
 	#cloud {
 		height: auto;
@@ -23,6 +27,10 @@ const Wrapper = styled.div`
 		image-rendering: optimizeQuality;
 		margin-top: 3rem;
 		margin-right: 0rem;
+		@media (orientation: landscape) {
+			margin-bottom: -5rem;
+			margin-top: 0;
+		}
 	}
 `;
 const Clouds = () => {

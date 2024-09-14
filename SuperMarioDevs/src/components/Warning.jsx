@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 const Wrapper = styled.div`
+	@media (orientation: landscape) {
+		display: none;
+	}
 	width: 100%;
 	height: 65%;
 	position: absolute;

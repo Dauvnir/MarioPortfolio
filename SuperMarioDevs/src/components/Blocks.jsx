@@ -2,19 +2,40 @@ import styled from "styled-components";
 import hitblock from "../assets/hitBlock.png";
 import box from "../assets/box.png";
 const BLOCK_SIZE = 45;
-
+const BLOCK_SIZE_MEDIA_WIDTH400 = 55;
 const Wrapper = styled.div`
 	width: 100%;
 	height: auto;
 	position: relative;
 	z-index: 1;
-	margin-left: ${BLOCK_SIZE * 4}px;
 	#block,
 	#box {
 		width: ${BLOCK_SIZE}px;
 		height: ${BLOCK_SIZE}px;
 		image-rendering: crisp-edges;
 	}
+	@media (orientation: landscape) {
+		position: absolute;
+		z-index: 2;
+		bottom: 10rem;
+		left: -4rem;
+	}
+	@media (min-width: 1px) {
+		margin-left: ${BLOCK_SIZE * 4}px;
+		#block,
+		#box {
+			width: ${BLOCK_SIZE}px;
+			height: ${BLOCK_SIZE}px;
+		}
+	}
+	/* @media (min-width: 400px) {
+		margin-left: ${BLOCK_SIZE_MEDIA_WIDTH400 * 4}px;
+		#block,
+		#box {
+			width: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
+			height: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
+		}
+	} */
 `;
 
 const Blocks = () => {

@@ -5,7 +5,7 @@ import Blocks from "../components/Blocks";
 import Clouds from "../components/Clouds";
 import Logo from "../components/Logo";
 import Text from "../components/Text";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -26,6 +26,23 @@ const WelcomePage = () => {
 		setShowWarning((prev) => !prev);
 	};
 
+	useEffect(() => {
+		function disableWarning() {
+			const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+
+			if (isLandscape) {
+				setShowWarning(false);
+			}
+		}
+
+		disableWarning();
+
+		window.addEventListener("resize", disableWarning);
+
+		return () => {
+			window.removeEventListener("resize", disableWarning);
+		};
+	}, []);
 	return (
 		<Wrapper>
 			<Text handlerShowWarning={handlerShowWarning} />
