@@ -22,30 +22,25 @@ const Wrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	color: var(--font-color);
-	font-size: 15px;
 	overflow: hidden;
 	text-align: center;
+	text-shadow: 1px 1px 0px black;
+
 	#grid {
-		margin: 0.5rem;
-		width: auto;
+		width: 100%;
+		max-width: 60rem;
+		padding: 1rem;
+		font-size: clamp(15px, 3vw, 4rem);
 		height: 33%;
 		display: grid;
-		grid-template-columns: 7rem 5rem 5rem 4rem;
+		grid-template-columns: 1fr 1fr 1fr 0.6fr;
 		grid-template-rows: 2rem 2rem;
+		column-gap: 1rem;
+		overflow: hidden;
 		grid-template-areas:
 			"mario   empty   world   time"
 			"points  coins   level   timeNumber";
-		@media (orientation: landscape) {
-			grid-template-columns: 8rem 6rem 6rem 5rem;
-			font-size: 1.1rem;
-			column-gap: 0.25rem;
-		}
-		@media (min-height: 800px) {
-			font-size: 1.25rem;
-			grid-template-columns: 7.5rem 5.5rem 6rem 6rem;
-			row-gap: 0.4rem;
-			margin-top: 2rem;
-		}
+
 		#mario {
 			grid-area: mario;
 			justify-self: left;
@@ -77,6 +72,7 @@ const Wrapper = styled.div`
 				width: 16px;
 				height: auto;
 				image-rendering: optimizeQuality;
+				width: clamp(16px, 3vw, 32px);
 			}
 		}
 		#level {
@@ -95,9 +91,9 @@ const Wrapper = styled.div`
 	}
 	#button {
 		width: 100%;
-		height: 33.3%;
+		height: 30%;
 		padding-inline: 0.75rem;
-
+		margin: auto 0;
 		button {
 			background: none;
 			width: 100%;
@@ -109,20 +105,23 @@ const Wrapper = styled.div`
 			padding: 0;
 			position: relative;
 			span {
-				font-size: 1rem;
+				text-shadow: 1px 1px 0px black;
+				font-size: clamp(1rem, 4vw, 1.75rem);
 				font-family: "Press Start 2P", system-ui;
 				font-weight: 400;
 				font-style: normal;
 				white-space: nowrap;
 				animation: ${fadeInOut} 4s infinite;
+				position: absolute;
+				left: 50%;
+				bottom: 20%;
+				transform: translate(-50%, -20%);
 				@media (orientation: landscape) {
-					width: 100%;
 					position: absolute;
-					bottom: 10px;
-					left: 0;
-				}
-				@media (min-height: 700px) {
-					font-size: 1.25rem;
+					bottom: 0;
+					left: 50%;
+					transform: translate(-50%, 0);
+					font-size: clamp(1rem, 3vw, 1.75rem);
 				}
 			}
 		}
@@ -132,21 +131,18 @@ const Wrapper = styled.div`
 		height: auto;
 		padding-inline: 0.75rem;
 		flex-grow: 1;
+		position: relative;
 		p {
-			font-size: 1.25rem;
-			margin-top: 0rem;
-			@media (min-height: 700px) {
-				margin-top: 1rem;
-			}
-			@media (min-height: 750px) {
-				margin-top: 2rem;
-			}
-			@media (min-height: 800px) {
-				font-size: 1.25rem;
-				margin-top: 3rem;
-			}
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: clamp(1rem, 4vw, 1.75rem);
 			@media (orientation: landscape) {
-				font-size: 1rem;
+				top: 0;
+				left: 50%;
+				transform: translate(-50%, 0);
+				font-size: clamp(1rem, 3vw, 1.75rem);
 			}
 		}
 	}

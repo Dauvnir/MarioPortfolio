@@ -5,28 +5,24 @@ const Wrapper = styled.div`
 	width: 100%;
 	height: 35%;
 	position: absolute;
-	top: 2rem;
+	top: 5rem;
 	left: 0;
 	z-index: 3;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	@media (orientation: landscape) {
-		top: 4.5rem;
-	}
-
+	transform: translate(0, 2rem);
 	#logoBlock {
 		border-top: 2px solid white;
 		border-left: 2px solid white;
 		border-right: 2px solid black;
 		border-bottom: 2px solid black;
 		background-color: var(--block-color);
-		height: 8rem;
-		width: 20rem;
+		height: clamp(8rem, 25vh, 23rem);
+		width: clamp(20rem, 80vw, 35rem);
 		position: relative;
 		z-index: 2;
-		margin: auto auto 0 auto;
 
 		.dotContainer {
 			z-index: 3;
@@ -40,8 +36,8 @@ const Wrapper = styled.div`
 			padding-top: 0.25rem;
 			div {
 				border-radius: 100%;
-				width: 5px;
-				height: 5px;
+				width: clamp(5px, 2vw, 10px);
+				height: clamp(5px, 2vh, 10px);
 				background-color: var(--logo-color);
 				box-shadow: 1px 2px 0px 0px black;
 			}
@@ -57,7 +53,7 @@ const Wrapper = styled.div`
 			position: absolute;
 			top: 0;
 			left: 0;
-			padding: 1rem 0.9rem;
+			padding: 1rem;
 			margin: 0;
 			display: flex;
 			justify-content: center;
@@ -66,23 +62,23 @@ const Wrapper = styled.div`
 			text-shadow: 2px 4px 0px black;
 			span {
 				color: var(--logo-color);
-				line-height: 2.5rem;
+				line-height: clamp(1.5rem, 10vh, 5rem);
 			}
 			#super {
-				font-size: 24px;
+				font-size: clamp(1.8rem, 12vw, 4rem);
 			}
 			#marioLogo {
-				font-size: 26px;
+				font-size: clamp(1rem, 6.9vw, 3rem);
 				white-space: nowrap;
 			}
 		}
 	}
 	#signature {
-		width: 19rem;
+		width: clamp(20rem, 80vw, 35rem);
 		height: auto;
 		color: var(--logo-color);
 		text-shadow: 1px 2px 0px black;
-		font-size: 13px;
+		font-size: clamp(1rem, 2vw, 2rem);
 		text-align: right;
 		margin: 0 auto auto auto;
 		white-space: nowrap;
