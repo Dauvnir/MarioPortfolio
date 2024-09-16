@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 		width: 100%;
 		max-width: 60rem;
 		padding: 1rem;
-		font-size: clamp(15px, 3vw, 4rem);
+		font-size: clamp(14px, 3vw, 1.75rem);
 		height: 33%;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 0.6fr;
@@ -40,7 +40,9 @@ const Wrapper = styled.div`
 		grid-template-areas:
 			"mario   empty   world   time"
 			"points  coins   level   timeNumber";
-
+		@media (orientation: landscape) {
+			row-gap: 0.5rem;
+		}
 		#mario {
 			grid-area: mario;
 			justify-self: left;
@@ -94,6 +96,10 @@ const Wrapper = styled.div`
 		height: 30%;
 		padding-inline: 0.75rem;
 		margin: auto 0;
+		@media (orientation: landscape) {
+			height: 20%;
+			margin-top: 5.5rem;
+		}
 		button {
 			background: none;
 			width: 100%;

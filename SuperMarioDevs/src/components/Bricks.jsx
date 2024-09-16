@@ -4,8 +4,8 @@ import block from "../assets/block.png";
 
 const BLOCK_SIZE = 45;
 const SMALL_BLOCK_HEIGHT = 20;
-const BLOCK_SIZE_MEDIA_WIDTH400 = 55;
-const SMALL_BLOCK_HEIGHT_MEDIA_WIDTH400 = 25;
+const BLOCK_SIZE_MEDIA_WIDTH1000 = 55;
+const SMALL_BLOCK_HEIGHT_MEDIA_WIDTH1000 = 25;
 
 const Wrap = styled.div`
 	width: 100vw;
@@ -42,18 +42,18 @@ const Wrap = styled.div`
 			height: ${SMALL_BLOCK_HEIGHT}px;
 		}
 	}
-	/* @media (min-width: 400px) {
-		grid-template-columns: repeat(auto-fill, ${BLOCK_SIZE_MEDIA_WIDTH400}px);
-		grid-template-rows: ${BLOCK_SIZE_MEDIA_WIDTH400}px ${SMALL_BLOCK_HEIGHT_MEDIA_WIDTH400}px;
+	@media (min-width: 400px) {
+		grid-template-columns: repeat(auto-fill, ${BLOCK_SIZE_MEDIA_WIDTH1000}px);
+		grid-template-rows: ${BLOCK_SIZE_MEDIA_WIDTH1000}px ${SMALL_BLOCK_HEIGHT_MEDIA_WIDTH1000}px;
 		#fullBlock {
-			width: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
-			height: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
+			width: ${BLOCK_SIZE_MEDIA_WIDTH1000}px;
+			height: ${BLOCK_SIZE_MEDIA_WIDTH1000}px;
 		}
 		#block {
-			width: ${BLOCK_SIZE_MEDIA_WIDTH400}px;
-			height: ${SMALL_BLOCK_HEIGHT_MEDIA_WIDTH400}px;
+			width: ${BLOCK_SIZE_MEDIA_WIDTH1000}px;
+			height: ${SMALL_BLOCK_HEIGHT_MEDIA_WIDTH1000}px;
 		}
-	} */
+	}
 `;
 // function logIt(text = "Blocks number:", arg) {
 // 	console.log(text, arg);

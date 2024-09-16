@@ -4,6 +4,9 @@ const Wrapper = styled.div`
 	@media (orientation: landscape) {
 		display: none;
 	}
+	@media (min-width: 800px) {
+		display: none;
+	}
 	width: 100%;
 	height: 65%;
 	position: absolute;
@@ -12,10 +15,10 @@ const Wrapper = styled.div`
 	z-index: 5;
 	display: flex;
 	justify-content: center;
-	align-items: start;
+	align-items: center;
 	#message {
-		width: 20rem;
-		height: 85%;
+		width: clamp(20rem, 80vw, 35rem);
+		height: 70%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -39,8 +42,8 @@ const Wrapper = styled.div`
 		padding-top: 0.25rem;
 		div {
 			border-radius: 100%;
-			width: 5px;
-			height: 5px;
+			width: clamp(5px, 2vw, 10px);
+			height: clamp(5px, 2vh, 10px);
 			background-color: var(--logo-color);
 			box-shadow: 1px 2px 0px 0px black;
 		}
@@ -53,22 +56,28 @@ const Wrapper = styled.div`
 	h1,
 	h2 {
 		margin-bottom: 0rem;
+		padding-inline: 1rem;
 	}
 	h1 {
+		font-size: clamp(2rem, 6vw, 4rem);
 		margin-top: 0;
+	}
+	h2 {
+		font-size: clamp(1rem, 4vw, 3rem);
 	}
 	p {
 		text-align: left;
-		padding: 0.5rem;
+		padding-inline: 1rem;
 		flex-grow: 1;
-		font-size: 1rem;
-		line-height: 1.8rem;
+		font-size: clamp(0.8rem, 4vw, 2rem);
+		line-height: 2.1rem;
+		overflow: scroll;
 	}
 	#confirm {
 		background-color: green;
 		border: none;
 		width: 60%;
-		height: 3rem;
+		min-height: 3rem;
 		border-radius: 25px;
 		margin-bottom: 1rem;
 		cursor: pointer;

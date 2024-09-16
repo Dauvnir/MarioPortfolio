@@ -3,8 +3,8 @@ import mountains from "../assets/mountains2.png";
 import pipeline from "../assets/pipe.png";
 import bowser from "../assets/bowser.png";
 import mario from "../assets/mario.png";
-
-const MARIO_MEDIA_WIDTH_400 = 55;
+import bushes from "../assets/bushes.png";
+const MARIO_MEDIA_WIDTH_1000 = 55;
 const MARIO = 40;
 
 const Wrap = styled.div`
@@ -16,21 +16,26 @@ const Wrap = styled.div`
 	gap: 1rem;
 	position: relative;
 	z-index: 1;
+	flex-grow: 1;
 	#marioMountain {
 		height: 100%;
-		width: 65%;
+		width: 40%;
 		position: relative;
 		z-index: 1;
+		flex-grow: 1;
 		#mountain {
 			width: 100%;
 			height: auto;
 			image-rendering: crisp-edges;
-			/* max-width: ;  set later to set max width*/
 			max-width: 240px;
 			position: absolute;
 			bottom: 0;
 			left: 0;
 			z-index: 1;
+			@media (min-width: 1000px) {
+				max-width: 360px;
+				image-rendering: pixelated;
+			}
 		}
 		#mario {
 			position: absolute;
@@ -46,15 +51,35 @@ const Wrap = styled.div`
 				width: ${MARIO}px;
 			}
 		}
-		/* @media (min-width: 400px) {
+		@media (min-width: 1000px) {
 			#mario {
-				width: ${MARIO_MEDIA_WIDTH_400}px;
+				width: ${MARIO_MEDIA_WIDTH_1000}px;
 			}
-		} */
+		}
+	}
+	#bush {
+		display: none;
+		@media (orientation: landscape) {
+			display: block;
+			width: 30%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: flex-end;
+		}
+		#bushes {
+			@media (orientation: landscape) {
+				display: block;
+				width: clamp(12rem, 20vw, 15rem);
+				height: auto;
+				image-rendering: crisp-edges;
+				z-index: 2;
+			}
+		}
 	}
 	#bowserAndPipe {
-		height: 100%;
-		width: 35%;
+		height: clamp(10rem, 25vh, 18rem);
+		width: 30%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -63,12 +88,12 @@ const Wrap = styled.div`
 			width: auto;
 			height: 50%;
 			image-rendering: optimizeQuality;
-			margin-bottom: -5px;
+			margin-bottom: -10px;
 			z-index: 2;
 		}
 		#pipeline {
 			width: auto;
-			height: calc(50% + 5px);
+			height: calc(50% + 10px);
 			image-rendering: optimizeQuality;
 		}
 	}
@@ -87,6 +112,13 @@ const MarioAndBowser = () => {
 					src={mario}
 					alt="mario"
 					id="mario"
+				/>
+			</div>
+			<div id="bush">
+				<img
+					id="bushes"
+					src={bushes}
+					alt="bush"
 				/>
 			</div>
 			<div id="bowserAndPipe">
