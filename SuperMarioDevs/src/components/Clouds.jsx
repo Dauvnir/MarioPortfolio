@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import clouds from "../assets/cloud3.png";
 import cloud from "../assets/cloud2.png";
+import cloud2 from "../assets/cloud1.png";
 const Wrapper = styled.div`
 	height: auto;
 	width: 100%;
@@ -32,6 +33,15 @@ const Wrapper = styled.div`
 			margin-top: 0;
 		}
 	}
+	#cloud2 {
+		height: auto;
+		width: 12rem;
+		image-rendering: optimizeQuality;
+		margin-top: 3rem;
+		@media (max-width: 999px) {
+			display: none;
+		}
+	}
 `;
 const Clouds = () => {
 	return (
@@ -40,6 +50,16 @@ const Clouds = () => {
 				id="clouds"
 				src={clouds}
 				alt="clouds"
+			/>
+			<img
+				id="cloud2"
+				src={cloud2}
+				alt="cloud"
+			/>
+			<img
+				id="cloud2"
+				src={clouds}
+				alt="cloud"
 			/>
 			<img
 				id="cloud"

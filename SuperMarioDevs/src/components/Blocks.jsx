@@ -2,7 +2,9 @@ import styled from "styled-components";
 import hitblock from "../assets/hitBlock.png";
 import box from "../assets/box.png";
 const BLOCK_SIZE = 45;
-const BLOCK_SIZE_MEDIA_WIDTH1000 = 55;
+const BLOCK_SIZE_MEDIA_WIDTH1330 = 50;
+const BLOCK_SIZE_MEDIA_WIDTH1600 = 55;
+
 const Wrapper = styled.div`
 	width: 100%;
 	height: auto;
@@ -37,12 +39,20 @@ const Wrapper = styled.div`
 			height: ${BLOCK_SIZE}px;
 		}
 	}
-	@media (min-width: 1000px) {
-		margin-left: ${BLOCK_SIZE_MEDIA_WIDTH1000 * 4}px;
+	@media (min-width: 1330px) {
+		margin-left: ${BLOCK_SIZE_MEDIA_WIDTH1330 * 4}px;
 		#block,
 		#box {
-			width: ${BLOCK_SIZE_MEDIA_WIDTH1000}px;
-			height: ${BLOCK_SIZE_MEDIA_WIDTH1000}px;
+			width: ${BLOCK_SIZE_MEDIA_WIDTH1330}px;
+			height: ${BLOCK_SIZE_MEDIA_WIDTH1330}px;
+		}
+	}
+	@media (min-width: 1630px) {
+		margin-left: ${BLOCK_SIZE_MEDIA_WIDTH1600 * 4}px;
+		#block,
+		#box {
+			width: ${BLOCK_SIZE_MEDIA_WIDTH1600}px;
+			height: ${BLOCK_SIZE_MEDIA_WIDTH1600}px;
 		}
 	}
 `;

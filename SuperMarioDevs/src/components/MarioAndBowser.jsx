@@ -4,7 +4,11 @@ import pipeline from "../assets/pipe.png";
 import bowser from "../assets/bowser.png";
 import mario from "../assets/mario.png";
 import bushes from "../assets/bushes.png";
-const MARIO_MEDIA_WIDTH_1000 = 55;
+import goomba from "../assets/goomba.png";
+
+const MARIO_MEDIA_WIDTH_1600 = 55;
+
+const MARIO_MEDIA_WIDTH_1330 = 50;
 const MARIO = 40;
 
 const Wrap = styled.div`
@@ -51,9 +55,14 @@ const Wrap = styled.div`
 				width: ${MARIO}px;
 			}
 		}
-		@media (min-width: 1000px) {
+		@media (min-width: 1330px) {
 			#mario {
-				width: ${MARIO_MEDIA_WIDTH_1000}px;
+				width: ${MARIO_MEDIA_WIDTH_1330}px;
+			}
+		}
+		@media (min-width: 1600px) {
+			#mario {
+				width: ${MARIO_MEDIA_WIDTH_1600}px;
 			}
 		}
 	}
@@ -78,7 +87,7 @@ const Wrap = styled.div`
 		}
 	}
 	#bowserAndPipe {
-		height: clamp(10rem, 25vh, 18rem);
+		height: clamp(10rem, 28vh, 14rem);
 		width: 30%;
 		display: flex;
 		justify-content: center;
@@ -86,15 +95,30 @@ const Wrap = styled.div`
 		flex-direction: column;
 		#bowser {
 			width: auto;
-			height: 50%;
+			height: 52%;
 			image-rendering: optimizeQuality;
 			margin-bottom: -10px;
 			z-index: 2;
 		}
 		#pipeline {
 			width: auto;
-			height: calc(50% + 10px);
+			height: calc(48% + 10px);
 			image-rendering: optimizeQuality;
+		}
+	}
+	#goomba {
+		display: none;
+		height: auto;
+		width: ${MARIO}px;
+		image-rendering: pixelated;
+		@media (min-width: 700px) {
+			display: block;
+		}
+		@media (min-width: 1330px) {
+			width: ${MARIO_MEDIA_WIDTH_1330}px;
+		}
+		@media (min-width: 1600px) {
+			width: ${MARIO_MEDIA_WIDTH_1600}px;
 		}
 	}
 `;
@@ -114,6 +138,21 @@ const MarioAndBowser = () => {
 					id="mario"
 				/>
 			</div>
+			<img
+				id="goomba"
+				src={goomba}
+				alt="goomba"
+			/>
+			<img
+				id="goomba"
+				src={goomba}
+				alt="goomba"
+			/>
+			<img
+				id="goomba"
+				src={goomba}
+				alt="goomba"
+			/>
 			<div id="bush">
 				<img
 					id="bushes"
@@ -121,6 +160,16 @@ const MarioAndBowser = () => {
 					alt="bush"
 				/>
 			</div>
+			<img
+				id="goomba"
+				src={goomba}
+				alt="goomba"
+			/>
+			<img
+				id="goomba"
+				src={goomba}
+				alt="goomba"
+			/>
 			<div id="bowserAndPipe">
 				<img
 					id="bowser"

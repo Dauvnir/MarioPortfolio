@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import coin from "../assets/mariocoin.gif";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 
 const fadeInOut = keyframes`
   0% {
@@ -42,6 +43,11 @@ const Wrapper = styled.div`
 			"points  coins   level   timeNumber";
 		@media (orientation: landscape) {
 			row-gap: 0.5rem;
+		}
+		@media (min-width: 1330px) {
+			grid-template-columns: 1fr 1fr 1fr 1fr;
+			max-width: 70rem;
+			margin-left: 3.5rem;
 		}
 		#mario {
 			grid-area: mario;
@@ -150,10 +156,24 @@ const Wrapper = styled.div`
 				transform: translate(-50%, 0);
 				font-size: clamp(1rem, 3vw, 1.75rem);
 			}
+			@media (min-width: 1000px) {
+				top: clamp(0rem, 10vh, 8rem);
+			}
 		}
 	}
 `;
 const Text = ({ handlerShowWarning }) => {
+	const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1300);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsLargeScreen(window.innerWidth > 1300);
+		};
+
+		window.addEventListener("resize", handleResize);
+
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 	return (
 		<Wrapper>
 			<div id="grid">
@@ -174,7 +194,11 @@ const Text = ({ handlerShowWarning }) => {
 			</div>
 			<div id="button">
 				<button onClick={handlerShowWarning}>
-					<span>Tap Here to Start</span>
+					{isLargeScreen ? (
+						<span>Press any button</span>
+					) : (
+						<span>Tap Here to Start</span>
+					)}
 				</button>
 			</div>
 			<div id="highscore">
