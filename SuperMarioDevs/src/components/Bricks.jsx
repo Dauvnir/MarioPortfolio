@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import block from "../assets/block.png";
+import block from "../assets/welcomePage/block.png";
 
 const BLOCK_SIZE = 45;
 const SMALL_BLOCK_HEIGHT = 20;

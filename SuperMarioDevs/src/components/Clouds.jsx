@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import clouds from "../assets/cloud3.png";
-import cloud from "../assets/cloud2.png";
-import cloud2 from "../assets/cloud1.png";
+import clouds from "../assets/welcomePage/cloud3.png";
+import cloud from "../assets/welcomePage/cloud2.png";
+import cloud2 from "../assets/welcomePage/cloud1.png";
 const Wrapper = styled.div`
 	height: auto;
 	width: 100%;

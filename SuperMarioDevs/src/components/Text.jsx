@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import coin from "../assets/mariocoin.gif";
+import coin from "../assets/welcomePage/mariocoin.gif";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 

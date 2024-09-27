@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import mountains from "../assets/mountains2.png";
-import pipeline from "../assets/pipe.png";
-import bowser from "../assets/bowser.png";
-import mario from "../assets/mario.png";
-import bushes from "../assets/bushes.png";
-import goomba from "../assets/goomba.png";
+import mountains from "../assets/welcomePage/mountains2.png";
+import pipeline from "../assets/welcomePage/pipe.png";
+import bowser from "../assets/welcomePage/bowser.png";
+import mario from "../assets/welcomePage/mario.png";
+import bushes from "../assets/welcomePage/bushes.png";
+import goomba from "../assets/welcomePage/goomba.png";
 
 const MARIO_MEDIA_WIDTH_1600 = 55;
 
