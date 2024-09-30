@@ -10,7 +10,10 @@ export function mainGame() {
 		sliceY: 11,
 		anims: {
 			"player-idle": { from: 253, to: 253, loop: true },
+			"player-walking": { from: 254, to: 256, loop: true },
+			"player-jump": { from: 258, to: 258 },
 			"goomba-death": [261],
+			"goomba-idle": { from: 262, to: 262 },
 			"goomba-walking": { from: 262, to: 263, loop: true },
 			"koopa-head-walking": { from: 230, to: 231, loop: true },
 			"koopa-body-walking": { from: 266, to: 267, loop: true },

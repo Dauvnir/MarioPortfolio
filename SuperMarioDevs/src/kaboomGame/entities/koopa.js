@@ -5,15 +5,16 @@ export function generateKoopa(k, pos) {
 			animSpeed: 0.4,
 		}),
 		k.area({
-			shape: new k.Rect(k.vec2(0, 0), 16, 30),
-			offset: k.vec2(0, -11), // Adjust the hitbox offset if needed
+			shape: new k.Rect(k.vec2(0, 0), 16, 16),
+			offset: k.vec2(0, 0), // Adjust the hitbox offset if needed
 		}),
 		k.body(),
 		k.pos(pos),
 		k.opacity(1),
 		k.offscreen(),
 		{
-			speed: 120,
+			speed: 80,
+			direction: "left",
 		},
 		"koopa",
 	];
@@ -32,6 +33,11 @@ export function generateKoopaHead(k, pos) {
 		}),
 		k.pos(pos.add(0, 0)), // Position the head above the body
 		k.offscreen(),
+		k.area({
+			shape: new k.Rect(k.vec2(0, 0), 16, 16),
+			offset: k.vec2(0, 0), // Adjust the hitbox offset if needed
+		}),
+		k.body(),
 		k.opacity(1),
 		"koopaHead",
 	];

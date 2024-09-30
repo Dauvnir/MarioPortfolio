@@ -1,6 +1,6 @@
-import { generateGoomba } from "../entities/goomba";
+import { generateGoomba, setGoombaAI } from "../entities/goomba";
 import { generateKoopa, generateKoopaHead } from "../entities/koopa";
-import { generatePlayer } from "../entities/marioPlayer";
+import { generatePlayer, setPlayerMovement } from "../entities/marioPlayer";
 import { colorizeBackground, drawBoundaries, drawTiles } from "../utils";
 import { fetchMapData } from "../utils";
 export default async function world(k) {
@@ -10,9 +10,8 @@ export default async function world(k) {
 	const mapHeight = 16 * 16;
 	const windowHeight = window.innerHeight;
 	const scale = parseFloat((windowHeight / mapHeight).toFixed(1));
-	const campPosX = k.camPos().x;
-	const cameraPosY = mapHeight / 2;
-
+	const cameraPosY = Math.round(mapHeight / 2);
+	const visibleMap = Math.round(k.width() / scale / 2);
 	const entities = {
 		player: null,
 		goomba: [],
@@ -47,7 +46,6 @@ export default async function world(k) {
 					entities.koopaHead.push(
 						map.add(generateKoopaHead(k, k.vec2(object.x, object.y), map))
 					);
-					console.log(map);
 				}
 			}
 			continue;
@@ -86,8 +84,9 @@ export default async function world(k) {
 		}
 	}
 	k.camScale(scale);
-	//camer intital position (entities.player.worldPos().x * 25) / 3.5
-	k.camPos(k.vec2((entities.player.worldPos().x * 25) / 3.5, cameraPosY));
+	k.camPos(
+		k.vec2(Math.round((entities.player.worldPos().x * 25) / 3.5, cameraPosY))
+	);
 	k.onUpdate(() => {
 		for (let i = 0; i < entities.koopaBody.length; i++) {
 			const body = entities.koopaBody[i];
@@ -97,12 +96,26 @@ export default async function world(k) {
 				head.pos.x = body.pos.x;
 			}
 		}
-		const marioPosX = entities.player.worldPos().x;
+
+		const marioPosX = Math.round(entities.player.worldPos().x);
+		const campPosX = Math.round(k.camPos().x);
 		if (marioPosX > campPosX) {
 			k.camPos(k.vec2(marioPosX, cameraPosY));
 		} else {
 			k.camPos(k.camPos().x, cameraPosY);
 		}
+
+		const canvasWidth = k.width();
+		const leftScreenEdge = campPosX - canvasWidth / 2 / scale;
+		if (marioPosX < leftScreenEdge) {
+			entities.player.pos.x = leftScreenEdge;
+		}
 	});
-	k.setGravity(mapHeight - 16 * 2);
+
+	k.setGravity(mapHeight - 16 / 10);
+	setPlayerMovement(k, entities.player);
+
+	for (const goomba of entities.goomba) {
+		setGoombaAI(k, goomba, visibleMap);
+	}
 }

@@ -1,3 +1,8 @@
+export function playAnimIfNotPlaying(gameObj, animName) {
+	if (gameObj.curAnim() !== animName) {
+		gameObj.play(animName);
+	}
+}
 export function colorizeBackground(k, r, g, b) {
 	k.add([k.rect(k.canvas.width, k.canvas.height), k.color(r, g, b), k.fixed()]);
 }
@@ -33,6 +38,7 @@ export function drawTiles(k, map, layer, tileheight, tilewidth) {
 			k.sprite("assets", { frame: tile - 1 }),
 			k.pos(tilePos),
 			k.offscreen(),
+			"tile",
 		]);
 	}
 }
@@ -55,7 +61,7 @@ export function drawBoundaries(k, map, layer) {
 				object.width,
 				object.height,
 				k.vec2(object.x, object.y),
-				object.name
+				"terrain"
 			)
 		);
 	}
