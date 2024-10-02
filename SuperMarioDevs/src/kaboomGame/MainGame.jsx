@@ -18,6 +18,9 @@ export function mainGame() {
 			"koopa-head-walking": { from: 230, to: 231, loop: true },
 			"koopa-body-walking": { from: 266, to: 267, loop: true },
 			"koopa-shell": [268],
+			"piranha-idle": { from: 264, to: 265, loop: true },
+			"piranha-idle-head": { from: 228, to: 229, loop: true },
+			"box-anim": { from: 0, to: 2, loop: true },
 		},
 		animspeed: {},
 	}).then(() => {

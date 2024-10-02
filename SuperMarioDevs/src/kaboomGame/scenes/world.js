@@ -1,7 +1,16 @@
-import { generateGoomba, setGoombaAI } from "../entities/goomba";
-import { generateKoopa, generateKoopaHead } from "../entities/koopa";
+import { generateGoomba } from "../entities/goomba";
+import {
+	generateKoopa,
+	generateKoopaHead,
+	synchroniseHead,
+} from "../entities/koopa";
 import { generatePlayer, setPlayerMovement } from "../entities/marioPlayer";
-import { colorizeBackground, drawBoundaries, drawTiles } from "../utils";
+import {
+	colorizeBackground,
+	drawBoundaries,
+	drawTiles,
+	setMonsterAi,
+} from "../utils";
 import { fetchMapData } from "../utils";
 export default async function world(k) {
 	colorizeBackground(k, 99, 160, 253);
@@ -17,6 +26,8 @@ export default async function world(k) {
 		goomba: [],
 		koopaBody: [],
 		koopaHead: [],
+		piranhaBody: [],
+		piranhaHead: [],
 	};
 
 	const layers = mapData.layers;
@@ -50,17 +61,13 @@ export default async function world(k) {
 			}
 			continue;
 		}
-
-		if (layer.name === "WorldPart") {
-			continue;
-		}
-		if (layer.name === "SecretLevel") {
-			continue;
-		}
 		if (layer.name === "Pipes") {
 			drawBoundaries(k, map, layer);
 		}
 		if (layer.name === "Blocks") {
+			drawBoundaries(k, map, layer);
+		}
+		if (layer.name === "Box") {
 			drawBoundaries(k, map, layer);
 		}
 		if (layer.name === "Assets") {
@@ -83,10 +90,11 @@ export default async function world(k) {
 			};
 		}
 	}
+	const marioInitialPosition = (entities.player.worldPos().x * 25) / 3.5;
+	const mapWidth = 16 * 112;
+	console.log(mapWidth - marioInitialPosition);
 	k.camScale(scale);
-	k.camPos(
-		k.vec2(Math.round((entities.player.worldPos().x * 25) / 3.5, cameraPosY))
-	);
+	k.camPos(k.vec2(Math.round(marioInitialPosition, cameraPosY)));
 	k.onUpdate(() => {
 		for (let i = 0; i < entities.koopaBody.length; i++) {
 			const body = entities.koopaBody[i];
@@ -99,23 +107,26 @@ export default async function world(k) {
 
 		const marioPosX = Math.round(entities.player.worldPos().x);
 		const campPosX = Math.round(k.camPos().x);
-		if (marioPosX > campPosX) {
+		const threshold = mapWidth - k.width() / 2 / scale;
+
+		if (marioPosX > campPosX && marioPosX < threshold) {
 			k.camPos(k.vec2(marioPosX, cameraPosY));
+		} else if (marioPosX >= threshold) {
+			k.camPos(k.vec2(threshold, cameraPosY));
 		} else {
-			k.camPos(k.camPos().x, cameraPosY);
+			k.camPos(k.vec2(campPosX, cameraPosY));
 		}
 
-		const canvasWidth = k.width();
-		const leftScreenEdge = campPosX - canvasWidth / 2 / scale;
-		if (marioPosX < leftScreenEdge) {
-			entities.player.pos.x = leftScreenEdge;
-		}
+		synchroniseHead(k, entities.koopaHead, entities.koopaBody);
 	});
 
 	k.setGravity(mapHeight - 16 / 10);
 	setPlayerMovement(k, entities.player);
 
 	for (const goomba of entities.goomba) {
-		setGoombaAI(k, goomba, visibleMap);
+		setMonsterAi(k, goomba, visibleMap, "goomba-walking");
+	}
+	for (const koopa of entities.koopaBody) {
+		setMonsterAi(k, koopa, visibleMap, "koopa-body-walking");
 	}
 }
