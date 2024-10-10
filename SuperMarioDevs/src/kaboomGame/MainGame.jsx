@@ -16,6 +16,7 @@ export function mainGame() {
 			"player-walking": { from: 253, to: 256, loop: true },
 			"player-jump": { from: 258, to: 258 },
 			"player-death": { from: 260, to: 260 },
+			"player-hold-pole": { from: 259, to: 259 },
 			"goomba-death": { from: 261, to: 261 },
 			"goomba-idle": { from: 262, to: 262 },
 			"goomba-walking": { from: 262, to: 263, loop: true },
@@ -45,5 +46,5 @@ export function mainGame() {
 		k.scene(sceneName, () => scenes[sceneName](k));
 	}
 
-	k.go("world");
+	k.go("world2");
 }

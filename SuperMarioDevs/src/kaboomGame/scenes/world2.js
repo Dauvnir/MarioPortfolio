@@ -14,6 +14,7 @@ import {
 	drawBoundaries,
 	drawTiles,
 	fetchMapData,
+	hugFinishPole,
 	playerDeathSentence,
 	setMonsterAi,
 } from "../utils";
@@ -133,4 +134,5 @@ export default async function world2(k) {
 		"koopa-shell"
 	);
 	playerDeathSentence(k, entities.player, "monster");
+	hugFinishPole(k, entities.player);
 }

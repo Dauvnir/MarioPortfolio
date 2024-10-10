@@ -41,7 +41,7 @@ export function setPlayerMovement(k, player) {
 			}
 			return;
 		}
-		if (["right"].includes(key)) {
+		if (["right", "d"].includes(key)) {
 			player.flipX = false;
 			player.direction = "right";
 			player.isIdle = false;
@@ -67,15 +67,20 @@ export function setPlayerMovement(k, player) {
 	});
 	k.onKeyRelease(() => {
 		if (player.direction === null) return;
-		if (player.isGrounded()) {
+		if (player.isGrounded() && player.curAnim() !== "player-hold-pole") {
 			player.isIdle = true;
 			playAnimIfNotPlaying(player, "player-idle");
 		}
 		return;
 	});
 	k.onUpdate(() => {
+		let currentAnim = player.curAnim();
 		if (player.direction === null) return;
-		if (player.isGrounded() && player.jumped === true) {
+		if (
+			player.isGrounded() &&
+			player.jumped === true &&
+			currentAnim !== "player-hold-pole"
+		) {
 			playAnimIfNotPlaying(player, "player-idle");
 			player.jumped = false;
 		}

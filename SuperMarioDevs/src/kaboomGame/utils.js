@@ -123,7 +123,24 @@ export function drawTiles(k, map, layer, tileheight, tilewidth) {
 					"coin",
 				]);
 				break;
-
+			case 108:
+			case 72:
+			case 144:
+				map.add([
+					k.sprite("assets", {
+						frame: tile - 1,
+					}),
+					k.area({
+						shape: new k.Rect(k.vec2(8, 0), 2, 16),
+						offset: k.vec2(0, 0),
+					}),
+					k.body({ isStatic: true }),
+					k.pos(tilePos),
+					k.offscreen(),
+					"tile",
+					"pole",
+				]);
+				break;
 			default:
 				map.add([
 					k.sprite("assets", { frame: tile - 1 }),
@@ -438,6 +455,53 @@ export function playerDeathSentence(k, player, monsterTag) {
 					k.destroy(player);
 					k.go("startWorld");
 				});
+			});
+		}
+	});
+}
+export function hugFinishPole(k, player) {
+	k.onUpdate(() => {
+		console.log(player.curAnim());
+	});
+	let isSliding = false;
+	let firstTile = true;
+
+	player.onCollide("pole", () => {
+		if (firstTile) {
+			player.pos.x = player.worldPos().x + 16;
+			player.speed = 0;
+			player.direction = null;
+			player.gravityScale = 0;
+			player.jumpForce = 0;
+			player.z = 2;
+			player.flipX = true;
+			firstTile = false;
+		}
+		if (!isSliding) {
+			isSliding = true;
+			playAnimIfNotPlaying(player, "player-hold-pole");
+			k.tween(
+				player.pos.y,
+				player.pos.y + 16,
+				0.5,
+				(val) => (player.pos.y = val),
+				k.easeInQuad
+			).then(() => {
+				if (player.isGrounded()) {
+					player.gravityScale = 1;
+					player.z = 1;
+					player.flipX = false;
+					player.jumped = false;
+					player.speed = 50;
+					player.jumpForce = 180;
+					player.direction = "right";
+					playAnimIfNotPlaying(player, "player-walking");
+					k.onUpdate(() => {
+						player.move(player.speed, 0);
+					});
+				}
+
+				isSliding = false;
 			});
 		}
 	});
