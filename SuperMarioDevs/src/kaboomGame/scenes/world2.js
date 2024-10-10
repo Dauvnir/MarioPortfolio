@@ -13,18 +13,21 @@ import {
 	colorizeBackground,
 	drawBoundaries,
 	drawTiles,
+	fetchMapData,
 	playerDeathSentence,
 	setMonsterAi,
 } from "../utils";
-import { fetchMapData } from "../utils";
-export default async function world(k) {
+
+export default async function world2(k) {
 	colorizeBackground(k, 99, 160, 253);
-	const mapData = await fetchMapData("./src/assets/map/world1.json");
+
+	const mapData = await fetchMapData("./src/assets/map/world2.json");
 	const map = k.add([k.pos(0, 0)]);
-	const windowHeight = window.innerHeight;
-	const mapWidth = mapData.width * mapData.tilewidth;
 	const mapHeight = mapData.height * mapData.tileheight;
+	const windowHeight = window.innerHeight;
 	const scale = parseFloat((windowHeight / mapHeight).toFixed(1));
+	const visibleMap = Math.round(k.width() / scale / 2);
+
 	const entities = {
 		player: null,
 		goomba: [],
@@ -36,10 +39,6 @@ export default async function world(k) {
 
 	const layers = mapData.layers;
 	for (const layer of layers) {
-		if (layer.name === "Boundaries") {
-			drawBoundaries(k, map, layer);
-		}
-
 		if (layer.name === "SpawnPoints") {
 			for (const object of layer.objects) {
 				if (object.name === "mario") {
@@ -65,13 +64,16 @@ export default async function world(k) {
 			}
 			continue;
 		}
+		if (layer.name === "Boundaries") {
+			drawBoundaries(k, map, layer);
+		}
+		if (layer.name === "WorldStart") {
+			drawBoundaries(k, map, layer, "startWorld");
+		}
 		if (layer.name === "Pipes") {
 			drawBoundaries(k, map, layer);
 		}
-		if (layer.name === "ChangeMap") {
-			drawBoundaries(k, map, layer, "changeMap");
-		}
-		if (layer.name === "Assets") {
+		if (layer.name === "Assets2") {
 			drawTiles(k, map, layer, mapData.tileheight, mapData.tilewidth);
 		}
 	}
@@ -83,7 +85,7 @@ export default async function world(k) {
 		if (body && head) {
 			head.follow = {
 				obj: body,
-				offset: k.vec2(0, 0), // Offset to position the head above the body
+				offset: k.vec2(0, 0),
 			};
 			body.follow = {
 				obj: head,
@@ -91,9 +93,6 @@ export default async function world(k) {
 			};
 		}
 	}
-
-	const threshold = Math.round(mapWidth - k.width() / 2 / scale);
-	const visibleMap = Math.round(mapWidth - threshold);
 
 	cameraMove(k, mapData, entities.player);
 
@@ -108,21 +107,18 @@ export default async function world(k) {
 		}
 		synchroniseHead(k, entities.koopaHead, entities.koopaBody);
 	});
-
 	k.setGravity(mapHeight - 16 / 10);
-
 	setPlayerMovement(k, entities.player);
 
 	for (const goomba of entities.goomba) {
 		setMonsterAi(k, goomba, visibleMap, "goomba-walking");
 	}
-
 	for (const koopa of entities.koopaBody) {
 		setMonsterAi(k, koopa, visibleMap, "koopa-body-walking");
 	}
 
-	entities.player.onCollide("changeMap", () => {
-		k.go("tweenLevel");
+	entities.player.onCollide("startWorld", () => {
+		k.go("startWorld");
 	});
 	collidingPlayerWithBlock(k, "questionBlock", entities.player, "box-afterHit");
 	collidingPlayerWithBlock(k, "block", entities.player);

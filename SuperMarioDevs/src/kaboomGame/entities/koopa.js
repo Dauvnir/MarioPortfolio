@@ -16,6 +16,7 @@ export function generateKoopa(k, pos) {
 
 		{
 			speed: 20,
+			canChangeState: true,
 		},
 		"koopa",
 		"monster",

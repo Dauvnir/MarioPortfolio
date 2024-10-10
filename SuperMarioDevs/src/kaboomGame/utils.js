@@ -33,59 +33,105 @@ export function drawTiles(k, map, layer, tileheight, tilewidth) {
 
 		nbOfDrawnTiles++;
 		if (tile === 0) continue;
+		let piranha;
+		let piranhaHead;
+		switch (tile) {
+			case 1:
+				map.add([
+					k.sprite("assets", {
+						frame: tile - 1,
+						anim: "box-anim",
+						animSpeed: 0.5,
+					}),
+					k.area(),
+					k.body({ isStatic: true }),
+					k.pos(tilePos),
+					k.offscreen(),
+					"tile",
+					"questionBlock",
+				]);
+				break;
 
-		if (tile === 1) {
-			map.add([
-				k.sprite("assets", {
-					frame: tile - 1,
-					anim: "box-anim",
-					animSpeed: 0.5,
-				}),
-				k.pos(tilePos),
-				k.offscreen(),
-				"tile",
-			]);
-		} else if (tile === 265) {
-			const piranha = map.add([
-				k.sprite("assets", {
-					frame: tile - 1,
-					anim: "piranha-idle",
-					animSpeed: 0.5,
-				}),
-				k.area(),
-				k.body({ isStatic: true }),
-				k.pos(tilePos.add(8, 0)),
-				k.z(1), // Set the initial Z-index to be in front of the tiles
-				"tile",
-				"piranhaBody",
-			]);
+			case 18:
+				map.add([
+					k.sprite("assets", {
+						frame: tile - 1,
+					}),
+					k.area(),
+					k.body({ isStatic: true }),
+					k.pos(tilePos),
+					k.offscreen(),
+					"tile",
+					"block",
+				]);
+				break;
 
-			togglePiranhaVisibility(k, piranha);
-		} else if (tile === 229) {
-			const piranhaHead = map.add([
-				k.sprite("assets", {
-					frame: tile - 1,
-					anim: "piranha-idle-head",
-					animSpeed: 0.5,
-				}),
-				k.area({
-					shape: new k.Rect(k.vec2(0, 0), 16, 8),
-					offset: k.vec2(0, 8), // Adjust the hitbox offset if needed
-				}),
-				k.body({ isStatic: true }),
-				k.pos(tilePos.add(8, 0)),
-				k.offscreen(),
-				"tile",
-				"piranhaHead",
-			]);
-			togglePiranhaVisibility(k, piranhaHead);
-		} else {
-			map.add([
-				k.sprite("assets", { frame: tile - 1 }),
-				k.pos(tilePos),
-				k.offscreen(),
-				"tile",
-			]);
+			case 265:
+				piranha = map.add([
+					k.sprite("assets", {
+						frame: tile - 1,
+						anim: "piranha-idle",
+						animSpeed: 0.5,
+					}),
+					k.area(),
+					k.body({ isStatic: true }),
+					k.pos(tilePos.add(8, 0)),
+					k.z(1), // Set the initial Z-index to be in front of the tiles
+					"tile",
+					"piranhaBody",
+					"monster",
+				]);
+				togglePiranhaVisibility(k, piranha);
+				break;
+
+			case 229:
+				piranhaHead = map.add([
+					k.sprite("assets", {
+						frame: tile - 1,
+						anim: "piranha-idle-head",
+						animSpeed: 0.5,
+					}),
+					k.area({
+						shape: new k.Rect(k.vec2(0, 0), 16, 8),
+						offset: k.vec2(0, 8), // Adjust the hitbox offset if needed
+					}),
+					k.body({ isStatic: true }),
+					k.pos(tilePos.add(8, 0)),
+					k.offscreen(),
+					"tile",
+					"piranhaHead",
+					"monster",
+				]);
+				togglePiranhaVisibility(k, piranhaHead);
+				break;
+
+			case 25:
+				map.add([
+					k.sprite("assets", {
+						frame: tile - 1,
+						anim: "coin-anim",
+						animSpeed: 0.5,
+					}),
+					k.area({
+						shape: new k.Rect(k.vec2(0, 0), 16, 16),
+						offset: k.vec2(0, 0),
+					}),
+					k.body({ isStatic: true }),
+					k.pos(tilePos),
+					k.offscreen(),
+					"tile",
+					"coin",
+				]);
+				break;
+
+			default:
+				map.add([
+					k.sprite("assets", { frame: tile - 1 }),
+					k.pos(tilePos),
+					k.offscreen(),
+					"tile",
+				]);
+				break;
 		}
 	}
 }
@@ -100,7 +146,7 @@ export function generateColliderComponents(k, width, height, pos, tag) {
 	];
 }
 
-export function drawBoundaries(k, map, layer) {
+export function drawBoundaries(k, map, layer, tag = "terrain") {
 	for (const object of layer.objects) {
 		map.add(
 			generateColliderComponents(
@@ -108,7 +154,7 @@ export function drawBoundaries(k, map, layer) {
 				object.width,
 				object.height,
 				k.vec2(object.x, object.y),
-				"terrain"
+				tag
 			)
 		);
 	}
@@ -127,16 +173,13 @@ export function setMonsterAi(k, monster, visibleMap, animation) {
 		}
 	});
 	monster.onCollide("terrain", (terrain) => {
-		// Define the bottom of the monster and the top of the terrain
 		const monsterBottom = monster.pos.y; // Bottom of monster
 		const terrainTop = terrain.pos.y; // Top of terrain
 
-		// Check if the monster is colliding with the terrain from above
-		if (monsterBottom === terrainTop) {
+		if (monsterBottom === terrainTop || monsterBottom < terrainTop) {
 			monster.enterState("left");
 			return;
 		}
-		// Check if the monster is moving right or left and reverse direction
 		if (monster.state === "right") {
 			monster.enterState("left");
 			return;
@@ -145,25 +188,44 @@ export function setMonsterAi(k, monster, visibleMap, animation) {
 			return;
 		}
 	});
-	// Handle monster-to-monster collision and reverse direction based on position
-	monster.onCollide("monster", () => {
-		if (monster.state === "left") {
-			monster.enterState("right");
-			return;
-		} else {
-			monster.enterState("left");
-			return;
+	monster.onCollide("monster", (mon) => {
+		const isKoopaShell = monster.curAnim() === "koopa-shell";
+		const isGoombaWalking = mon.curAnim() === "goomba-walking";
+
+		if (isKoopaShell && isGoombaWalking) {
+			mon.area.shape.height = 8;
+			mon.area.offset.y = 8;
+			mon.speed = 0;
+			mon.collisionIgnore = ["koopa", "goomba", "player"];
+			playAnimIfNotPlaying(mon, "goomba-death");
+			k.wait(1, () => {
+				k.destroy(mon);
+			});
 		}
+
+		const newState = monster.state === "left" ? "right" : "left";
+		monster.enterState(newState);
 	});
 
 	const left = monster.onStateEnter("left", () => {
 		monster.flipX = true;
-		playAnimIfNotPlaying(monster, animation);
+		//brute force method to block reverting back koopa animation when colliding with monster
+		if (
+			monster.curAnim() != "koopa-shell" &&
+			monster.curAnim() != "goomba-death"
+		) {
+			playAnimIfNotPlaying(monster, animation);
+		}
 	});
 
 	const right = monster.onStateEnter("right", () => {
 		monster.flipX = false;
-		playAnimIfNotPlaying(monster, animation);
+		if (
+			monster.curAnim() != "koopa-shell" &&
+			monster.curAnim() != "goomba-death"
+		) {
+			playAnimIfNotPlaying(monster, animation);
+		}
 	});
 
 	k.onSceneLeave(() => {
@@ -177,7 +239,7 @@ export async function togglePiranhaVisibility(k, piranha) {
 
 	async function hideAndShow() {
 		let initialY = piranha.pos.y;
-		const moveBy = 24;
+		const moveBy = 26;
 		const duration = 1;
 		const steps = 40;
 		const delayBetweenSteps = duration / steps;
@@ -197,4 +259,186 @@ export async function togglePiranhaVisibility(k, piranha) {
 	}
 
 	hideAndShow(); // Start the smooth hide-and-show cycle
+}
+
+export function collidingPlayerWithBlock(k, tag, player, animName) {
+	player.onCollide(tag, (block) => {
+		if (player.worldPos().y > block.worldPos().y) {
+			k.tween(
+				block.pos.y,
+				block.pos.y - 8,
+				0.1, // Duration (0.1 seconds)
+				(val) => (block.pos.y = val), // Update the block's Y position as tween progresses
+				k.easeOutQuad // Optional easing function for smoothness
+			).then(() => {
+				k.tween(
+					block.pos.y,
+					block.pos.y + 8,
+					0.1, // Duration (0.1 seconds)
+					(val) => (block.pos.y = val),
+					k.easeInQuad // Smooth ease-in easing for the return
+				);
+			});
+			if (animName) {
+				playAnimIfNotPlaying(block, animName);
+			}
+		}
+	});
+}
+export function collidingPlayerWithGoomba(k, tag, player, animName) {
+	player.onCollide(tag, (goomba) => {
+		if (player.worldPos().y < goomba.worldPos().y) {
+			if (animName) {
+				playAnimIfNotPlaying(goomba, animName);
+				goomba.area.shape.height = 8;
+				goomba.area.offset.y = 8;
+				goomba.speed = 0;
+				k.wait(0.75, () => {
+					k.destroy(goomba);
+				});
+			}
+		}
+	});
+}
+
+export async function collidingPlayerWithKoopa(
+	k,
+	tagHead,
+	tagBody,
+	player,
+	arrHead,
+	arrBody,
+	animName
+) {
+	player.onCollide(tagHead, (koopaHead) => {
+		if (player.worldPos().y < koopaHead.worldPos().y) {
+			const index = arrHead.indexOf(koopaHead);
+			let monsterBody = arrBody[index];
+			if (monsterBody) {
+				playAnimIfNotPlaying(monsterBody, animName);
+				monsterBody.speed = 0;
+				monsterBody.canChangeState = true;
+			}
+			k.destroy(koopaHead);
+		}
+	});
+	player.onCollide(tagBody, (koopaBody) => {
+		if (!koopaBody.canChangeState) return;
+		if (koopaBody.curAnim() === "koopa-shell") {
+			k.wait(0.1, () => {
+				koopaBody.speed = 160;
+				koopaBody.canChangeState = false;
+			});
+		}
+		if (player.direction === "left") {
+			koopaBody.enterState("left");
+		} else {
+			koopaBody.enterState("right");
+		}
+		k.wait(1, () => {
+			koopaBody.canChangeState = true;
+		});
+	});
+}
+export function cameraMove(k, mapData, player) {
+	const windowHeight = window.innerHeight;
+	const mapHeight = mapData.height * mapData.tileheight;
+	const camPosY = mapHeight / 2 + 14;
+	const mapWidth = mapData.width * mapData.tilewidth;
+	const scale = parseFloat((windowHeight / mapHeight).toFixed(1));
+	const threshold = Math.round(mapWidth - k.width() / 2 / scale);
+	const visibleMap = Math.round(mapWidth - threshold);
+
+	k.camScale(scale);
+	k.camPos(k.vec2(visibleMap, camPosY));
+
+	k.onUpdate(() => {
+		let camPosX = k.camPos().x;
+		let leftMapBoundaries = camPosX - visibleMap;
+		let marioPosX = Math.round(player.worldPos().x);
+
+		if (marioPosX >= threshold) {
+			k.camPos(k.vec2(threshold, camPosY));
+		}
+		if (marioPosX > camPosX && marioPosX < threshold) {
+			k.camPos(k.vec2(marioPosX, camPosY));
+		}
+		if (player.pos.x <= leftMapBoundaries) {
+			player.pos.x = leftMapBoundaries + 1;
+		}
+	});
+}
+
+export function playerDeathSentence(k, player, monsterTag) {
+	let deathTriggered = false;
+
+	player.onCollide(monsterTag, async (monster) => {
+		if (monster.curAnim() === "koopa-shell" && monster.speed === 0) return;
+		if (deathTriggered) return;
+		if (
+			player.pos.y >= monster.pos.y ||
+			monster.curAnim() === "piranha-idle-head"
+		) {
+			deathTriggered = true;
+			player.direction = null;
+			player.speed = 0;
+			player.z = 2;
+			player.collisionIgnore = ["monster", "tile", "koopaHead", "terrain"];
+			player.gravityScale = 0;
+			playAnimIfNotPlaying(player, "player-death");
+
+			k.tween(
+				player.pos.y,
+				player.pos.y - 40,
+				0.5,
+				(val) => (player.pos.y = val),
+				k.easeOutQuad
+			);
+			k.wait(3, () => {
+				k.tween(
+					player.pos.y,
+					player.pos.y + 100,
+					0.75,
+					(val) => (player.pos.y = val),
+					k.easeInQuad
+				).then(() => {
+					k.destroy(player);
+					k.go("startWorld");
+				});
+			});
+		}
+	});
+
+	k.onUpdate(() => {
+		if (!deathTriggered && player.pos.y > 248) {
+			deathTriggered = true;
+			player.direction = null;
+			player.speed = 0;
+			player.z = 2;
+			player.collisionIgnore = ["monster", "tile", "koopaHead", "terrain"];
+			player.gravityScale = 0;
+			player.jumpForce = 0;
+			playAnimIfNotPlaying(player, "player-death");
+
+			k.tween(
+				player.pos.y,
+				player.pos.y - 80,
+				1,
+				(val) => (player.pos.y = val),
+				k.easeOutQuad
+			);
+			k.wait(3, () => {
+				k.tween(
+					player.pos.y,
+					player.pos.y + 40,
+					0.75,
+					(val) => (player.pos.y = val),
+					k.easeInQuad
+				).then(() => {
+					k.destroy(player);
+					k.go("startWorld");
+				});
+			});
+		}
+	});
 }

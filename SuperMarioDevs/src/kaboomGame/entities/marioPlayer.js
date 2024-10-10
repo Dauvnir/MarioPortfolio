@@ -4,7 +4,7 @@ export function generatePlayer(k, pos) {
 	return [
 		k.sprite("assets", {
 			anim: "player-idle",
-			animSpeed: 1.5,
+			animSpeed: 1,
 		}), //offset , width and height hitbox
 		k.area({
 			shape: new k.Rect(k.vec2(0, 0), 16, 16),
@@ -14,60 +14,70 @@ export function generatePlayer(k, pos) {
 		k.pos(pos),
 		k.opacity(1),
 		{
-			speed: 80,
+			speed: 70,
+			jumpforce: 180,
 			isAttacking: false,
-			direction: "idle",
+			direction: "right",
+			isIdle: true,
 			isSprinting: false,
+			jumped: false,
 		},
 		"marioPlayer",
 	];
 }
 
 export function setPlayerMovement(k, player) {
-	const JUMP_FORCE = 190;
+	console.log(player.direction, player.curAnim());
 	k.onKeyDown((key) => {
-		if (["left", "a"].includes(key)) {
+		if (player.direction === null) return;
+
+		if (["left"].includes(key)) {
 			player.flipX = true;
+			player.direction = "left";
+			player.isIdle = false;
+			player.move(-player.speed, 0);
 			if (player.isGrounded()) {
 				playAnimIfNotPlaying(player, "player-walking");
-				player.direction = "left";
 			}
-			player.move(-player.speed, 0);
 			return;
 		}
-		if (["right", "d"].includes(key)) {
+		if (["right"].includes(key)) {
 			player.flipX = false;
+			player.direction = "right";
+			player.isIdle = false;
+			player.move(player.speed, 0);
 			if (player.isGrounded()) {
 				playAnimIfNotPlaying(player, "player-walking");
-				player.direction = "right";
 			}
-			player.move(player.speed, 0);
 			return;
 		}
 	});
 	k.onKeyPress((key) => {
+		if (player.direction === null) return;
+
 		if (["space"].includes(key)) {
 			playAnimIfNotPlaying(player, "player-jump");
 			if (player.isGrounded()) {
-				player.jump(JUMP_FORCE);
-				player.direction = "jump";
+				player.jump(player.jumpforce);
+				player.jumped = true;
+				player.isIdle = false;
 			}
 			return;
 		}
 	});
 	k.onKeyRelease(() => {
+		if (player.direction === null) return;
 		if (player.isGrounded()) {
-			player.direction = "idle";
+			player.isIdle = true;
 			playAnimIfNotPlaying(player, "player-idle");
 		}
 		return;
 	});
 	k.onUpdate(() => {
-		if (player.isGrounded()) {
-			if (player.direction === "jump") {
-				playAnimIfNotPlaying(player, "player-idle");
-				player.direction = "idle";
-			}
+		if (player.direction === null) return;
+		if (player.isGrounded() && player.jumped === true) {
+			playAnimIfNotPlaying(player, "player-idle");
+			player.jumped = false;
 		}
 	});
 }
