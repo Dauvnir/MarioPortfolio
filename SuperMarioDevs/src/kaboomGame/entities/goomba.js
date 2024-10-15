@@ -18,5 +18,6 @@ export function generateGoomba(k, pos) {
 		},
 		"goomba",
 		"monster",
+		"enemy",
 	];
 }

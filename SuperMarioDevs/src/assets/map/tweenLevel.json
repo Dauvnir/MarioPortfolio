@@ -58,7 +58,7 @@
          "name":"Nextworld",
          "objects":[
                 {
-                 "height":32,
+                 "height":30.375,
                  "id":53,
                  "name":"nextWorld",
                  "rotation":0,
@@ -66,7 +66,7 @@
                  "visible":true,
                  "width":0,
                  "x":512,
-                 "y":112
+                 "y":113.625
                 }],
          "opacity":1,
          "type":"objectgroup",

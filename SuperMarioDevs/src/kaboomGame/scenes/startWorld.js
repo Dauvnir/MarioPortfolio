@@ -5,6 +5,7 @@ import {
 	colorizeBackground,
 	drawBoundaries,
 	drawTiles,
+	enterThePipe,
 	fetchMapData,
 } from "../utils";
 
@@ -36,7 +37,7 @@ export async function startWorld(k) {
 			drawBoundaries(k, map, layer, "nextWorld");
 		}
 		if (layer.name === "Pipes") {
-			drawBoundaries(k, map, layer);
+			drawBoundaries(k, map, layer, "pipes");
 		}
 		if (layer.name === "Assets") {
 			drawTiles(k, map, layer, mapData.tileheight, mapData.tilewidth);
@@ -51,7 +52,5 @@ export async function startWorld(k) {
 
 	collidingPlayerWithBlock(k, "questionBlock", entities.player, "box-afterHit");
 
-	entities.player.onCollide("nextWorld", () => {
-		k.go("world");
-	});
+	enterThePipe(entities.player, k, "nextWorld", "world");
 }

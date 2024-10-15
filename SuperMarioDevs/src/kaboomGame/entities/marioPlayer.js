@@ -5,10 +5,10 @@ export function generatePlayer(k, pos) {
 		k.sprite("assets", {
 			anim: "player-idle",
 			animSpeed: 1,
-		}), //offset , width and height hitbox
+		}),
 		k.area({
 			shape: new k.Rect(k.vec2(0, 0), 16, 16),
-			offset: k.vec2(2, 0), // Adjust the hitbox offset if needed
+			offset: k.vec2(2, 0),
 		}),
 		k.body(),
 		k.pos(pos),
@@ -27,7 +27,6 @@ export function generatePlayer(k, pos) {
 }
 
 export function setPlayerMovement(k, player) {
-	console.log(player.direction, player.curAnim());
 	k.onKeyDown((key) => {
 		if (player.direction === null) return;
 
@@ -41,7 +40,7 @@ export function setPlayerMovement(k, player) {
 			}
 			return;
 		}
-		if (["right", "d"].includes(key)) {
+		if (["right"].includes(key)) {
 			player.flipX = false;
 			player.direction = "right";
 			player.isIdle = false;
@@ -50,6 +49,11 @@ export function setPlayerMovement(k, player) {
 				playAnimIfNotPlaying(player, "player-walking");
 			}
 			return;
+		}
+		if (["d"].includes(key)) {
+			player.speed = 140;
+			player.animSpeed = 2;
+			player.isSprinting = true;
 		}
 	});
 	k.onKeyPress((key) => {
@@ -65,7 +69,12 @@ export function setPlayerMovement(k, player) {
 			return;
 		}
 	});
-	k.onKeyRelease(() => {
+	k.onKeyRelease((key) => {
+		if (["d"].includes(key)) {
+			player.speed = 70;
+			player.animSpeed = 1;
+			player.isSprinting = false;
+		}
 		if (player.direction === null) return;
 		if (player.isGrounded() && player.curAnim() !== "player-hold-pole") {
 			player.isIdle = true;

@@ -14,7 +14,9 @@ import {
 	drawBoundaries,
 	drawTiles,
 	fetchMapData,
+	generateCoinsAfterHit,
 	hugFinishPole,
+	onKillingMonster,
 	playerDeathSentence,
 	setMonsterAi,
 } from "../utils";
@@ -68,11 +70,14 @@ export default async function world2(k) {
 		if (layer.name === "Boundaries") {
 			drawBoundaries(k, map, layer);
 		}
+		if (layer.name === "Blocks") {
+			drawBoundaries(k, map, layer, "blocks");
+		}
 		if (layer.name === "WorldStart") {
 			drawBoundaries(k, map, layer, "startWorld");
 		}
 		if (layer.name === "Pipes") {
-			drawBoundaries(k, map, layer);
+			drawBoundaries(k, map, layer, "pipes");
 		}
 		if (layer.name === "Assets2") {
 			drawTiles(k, map, layer, mapData.tileheight, mapData.tilewidth);
@@ -112,10 +117,10 @@ export default async function world2(k) {
 	setPlayerMovement(k, entities.player);
 
 	for (const goomba of entities.goomba) {
-		setMonsterAi(k, goomba, visibleMap, "goomba-walking");
+		setMonsterAi(k, goomba, visibleMap, "goomba-walking", map);
 	}
 	for (const koopa of entities.koopaBody) {
-		setMonsterAi(k, koopa, visibleMap, "koopa-body-walking");
+		setMonsterAi(k, koopa, visibleMap, "koopa-body-walking", map);
 	}
 
 	entities.player.onCollide("startWorld", () => {
@@ -135,4 +140,6 @@ export default async function world2(k) {
 	);
 	playerDeathSentence(k, entities.player, "monster");
 	hugFinishPole(k, entities.player);
+	generateCoinsAfterHit(k, entities.player, "questionBlock", map);
+	onKillingMonster(k, map);
 }

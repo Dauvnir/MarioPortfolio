@@ -28,6 +28,7 @@ export function mainGame() {
 			"box-anim": { from: 0, to: 2, loop: true },
 			"box-afterHit": { from: 3, to: 3, loop: true },
 			"coin-anim": { from: 24, to: 26, loop: true },
+			"coin-anim-afterBlockHit": { from: 64, to: 67, loop: true },
 		},
 		animspeed: {},
 	}).then(() => {
@@ -41,10 +42,9 @@ export function mainGame() {
 		startWorld,
 	};
 
-	// Register all scenes
 	for (const sceneName in scenes) {
 		k.scene(sceneName, () => scenes[sceneName](k));
 	}
 
-	k.go("world2");
+	k.go("tweenLevel");
 }

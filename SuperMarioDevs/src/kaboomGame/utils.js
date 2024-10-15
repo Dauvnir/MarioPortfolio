@@ -4,7 +4,12 @@ export function playAnimIfNotPlaying(gameObj, animName) {
 	}
 }
 export function colorizeBackground(k, r, g, b) {
-	k.add([k.rect(k.canvas.width, k.canvas.height), k.color(r, g, b), k.fixed()]);
+	k.add([
+		k.rect(k.canvas.width, k.canvas.height),
+		k.color(r, g, b),
+		k.fixed(),
+		k.z(-1),
+	]);
 }
 export async function fetchMapData(mapPath) {
 	try {
@@ -116,7 +121,6 @@ export function drawTiles(k, map, layer, tileheight, tilewidth) {
 						shape: new k.Rect(k.vec2(0, 0), 16, 16),
 						offset: k.vec2(0, 0),
 					}),
-					k.body({ isStatic: true }),
 					k.pos(tilePos),
 					k.offscreen(),
 					"tile",
@@ -139,6 +143,22 @@ export function drawTiles(k, map, layer, tileheight, tilewidth) {
 					k.offscreen(),
 					"tile",
 					"pole",
+				]);
+				break;
+			case 106:
+			case 107:
+			case 142:
+			case 143:
+			case 178:
+			case 179:
+				map.add([
+					k.sprite("assets", {
+						frame: tile - 1,
+					}),
+					k.pos(tilePos),
+					k.offscreen(),
+					"tile",
+					"pipe",
 				]);
 				break;
 			default:
@@ -177,8 +197,7 @@ export function drawBoundaries(k, map, layer, tag = "terrain") {
 	}
 }
 
-//terrain
-export function setMonsterAi(k, monster, visibleMap, animation) {
+export function setMonsterAi(k, monster, visibleMap, animation, map) {
 	k.onUpdate(() => {
 		const isVisible = k.camPos().x + visibleMap;
 		if (monster.pos.x < isVisible) {
@@ -193,21 +212,25 @@ export function setMonsterAi(k, monster, visibleMap, animation) {
 		const monsterBottom = monster.pos.y; // Bottom of monster
 		const terrainTop = terrain.pos.y; // Top of terrain
 
-		if (monsterBottom === terrainTop || monsterBottom < terrainTop) {
+		if (monsterBottom < terrainTop) {
 			monster.enterState("left");
-			return;
 		}
-		if (monster.state === "right") {
-			monster.enterState("left");
-			return;
-		} else {
-			monster.enterState("right");
-			return;
-		}
+	});
+	monster.onCollide("pipes", () => {
+		monster.state === "right"
+			? monster.enterState("left")
+			: monster.enterState("right");
+	});
+	monster.onCollide("blocks", () => {
+		monster.state === "right"
+			? monster.enterState("left")
+			: monster.enterState("right");
 	});
 	monster.onCollide("monster", (mon) => {
 		const isKoopaShell = monster.curAnim() === "koopa-shell";
 		const isGoombaWalking = mon.curAnim() === "goomba-walking";
+		const monPositionOnXaxis = mon.pos.x;
+		const monPositionOnYaxis = mon.pos.y;
 
 		if (isKoopaShell && isGoombaWalking) {
 			mon.area.shape.height = 8;
@@ -215,8 +238,17 @@ export function setMonsterAi(k, monster, visibleMap, animation) {
 			mon.speed = 0;
 			mon.collisionIgnore = ["koopa", "goomba", "player"];
 			playAnimIfNotPlaying(mon, "goomba-death");
-			k.wait(1, () => {
+			const points = map.add([
+				k.sprite("assets", {
+					frame: 294 - 1,
+				}),
+				k.pos(monPositionOnXaxis, monPositionOnYaxis - 16),
+				k.offscreen(),
+				"100pts",
+			]);
+			k.wait(0.75, () => {
 				k.destroy(mon);
+				k.destroy(points);
 			});
 		}
 
@@ -256,7 +288,7 @@ export async function togglePiranhaVisibility(k, piranha) {
 
 	async function hideAndShow() {
 		let initialY = piranha.pos.y;
-		const moveBy = 26;
+		const moveBy = 27;
 		const duration = 1;
 		const steps = 40;
 		const delayBetweenSteps = duration / steps;
@@ -297,8 +329,41 @@ export function collidingPlayerWithBlock(k, tag, player, animName) {
 				);
 			});
 			if (animName) {
-				playAnimIfNotPlaying(block, animName);
+				k.wait(0.01, () => {
+					playAnimIfNotPlaying(block, animName);
+				});
 			}
+		}
+	});
+}
+export function generateCoinsAfterHit(k, player, tag, map) {
+	player.onCollide(tag, (block) => {
+		if (block.curAnim() === "box-afterHit") return;
+		if (player.worldPos().y > block.worldPos().y) {
+			const blockPositionOnXaxis = block.pos.x;
+			const blockPositionOnYaxis = block.pos.y;
+			const coin = map.add([
+				k.sprite("assets", {
+					frame: 25 - 1,
+					anim: "coin-anim-afterBlockHit",
+					animSpeed: 1.5,
+				}),
+				k.area(),
+				k.body(),
+				k.pos(blockPositionOnXaxis, blockPositionOnYaxis - 16),
+				k.offscreen(),
+				"coinAfterHit",
+			]);
+			k.tween(
+				coin.pos.y,
+				coin.pos.y - 32,
+				0.1,
+				(val) => (coin.pos.y = val),
+				k.easeOutQuad
+			);
+			k.wait(0.4, () => {
+				k.destroy(coin);
+			});
 		}
 	});
 }
@@ -310,6 +375,8 @@ export function collidingPlayerWithGoomba(k, tag, player, animName) {
 				goomba.area.shape.height = 8;
 				goomba.area.offset.y = 8;
 				goomba.speed = 0;
+
+				// jesli array .length  jest rowny 0 dajes 100 jesli 1 dajes 200 ... az do 1000
 				k.wait(0.75, () => {
 					k.destroy(goomba);
 				});
@@ -328,7 +395,7 @@ export async function collidingPlayerWithKoopa(
 	animName
 ) {
 	player.onCollide(tagHead, (koopaHead) => {
-		if (player.worldPos().y < koopaHead.worldPos().y) {
+		if (koopaHead.worldPos().y > player.worldPos().y) {
 			const index = arrHead.indexOf(koopaHead);
 			let monsterBody = arrBody[index];
 			if (monsterBody) {
@@ -340,19 +407,17 @@ export async function collidingPlayerWithKoopa(
 		}
 	});
 	player.onCollide(tagBody, (koopaBody) => {
-		if (!koopaBody.canChangeState) return;
+		if (koopaBody.canChangeState === false) return;
 		if (koopaBody.curAnim() === "koopa-shell") {
 			k.wait(0.1, () => {
 				koopaBody.speed = 160;
 				koopaBody.canChangeState = false;
 			});
 		}
-		if (player.direction === "left") {
-			koopaBody.enterState("left");
-		} else {
-			koopaBody.enterState("right");
-		}
-		k.wait(1, () => {
+		player.direction === "left"
+			? koopaBody.enterState("left")
+			: koopaBody.enterState("right");
+		k.wait(0.1, () => {
 			koopaBody.canChangeState = true;
 		});
 	});
@@ -390,18 +455,28 @@ export function playerDeathSentence(k, player, monsterTag) {
 	let deathTriggered = false;
 
 	player.onCollide(monsterTag, async (monster) => {
-		if (monster.curAnim() === "koopa-shell" && monster.speed === 0) return;
-		if (deathTriggered) return;
+		if (deathTriggered) {
+			return;
+		}
+		if (player.pos.y < monster.pos.y && monster.curAnim() === "koopa-shell") {
+			return;
+		}
 		if (
-			player.pos.y >= monster.pos.y ||
-			monster.curAnim() === "piranha-idle-head"
+			monster.curAnim() === "piranha-idle-head" ||
+			monster.curAnim() === "piranha-idle" ||
+			monster.speed !== 0
 		) {
 			deathTriggered = true;
 			player.direction = null;
 			player.speed = 0;
 			player.z = 2;
-			player.collisionIgnore = ["monster", "tile", "koopaHead", "terrain"];
-			player.gravityScale = 0;
+			player.collisionIgnore = [
+				"monster",
+				"tile",
+				"koopaHead",
+				"terrain",
+				"pipes",
+			];
 			playAnimIfNotPlaying(player, "player-death");
 
 			k.tween(
@@ -460,13 +535,12 @@ export function playerDeathSentence(k, player, monsterTag) {
 	});
 }
 export function hugFinishPole(k, player) {
-	k.onUpdate(() => {
-		console.log(player.curAnim());
-	});
 	let isSliding = false;
 	let firstTile = true;
-
+	let onPole = false;
 	player.onCollide("pole", () => {
+		if (onPole) return;
+
 		if (firstTile) {
 			player.pos.x = player.worldPos().x + 16;
 			player.speed = 0;
@@ -476,6 +550,7 @@ export function hugFinishPole(k, player) {
 			player.z = 2;
 			player.flipX = true;
 			firstTile = false;
+			onPole = true;
 		}
 		if (!isSliding) {
 			isSliding = true;
@@ -486,23 +561,104 @@ export function hugFinishPole(k, player) {
 				0.5,
 				(val) => (player.pos.y = val),
 				k.easeInQuad
-			).then(() => {
-				if (player.isGrounded()) {
-					player.gravityScale = 1;
-					player.z = 1;
-					player.flipX = false;
-					player.jumped = false;
-					player.speed = 50;
-					player.jumpForce = 180;
-					player.direction = "right";
-					playAnimIfNotPlaying(player, "player-walking");
-					k.onUpdate(() => {
-						player.move(player.speed, 0);
-					});
-				}
-
-				isSliding = false;
-			});
+			);
 		}
+		player.onCollide("blocks", () => {
+			onPole = false;
+			isSliding = false;
+			player.gravityScale = 1;
+			player.z = 1;
+			player.flipX = false;
+			player.jumped = false;
+			player.speed = 50;
+			player.jumpForce = 180;
+			player.direction = "right";
+			playAnimIfNotPlaying(player, "player-walking");
+			k.onUpdate(() => {
+				player.move(player.speed, 0);
+			});
+		});
+	});
+}
+
+export function onKillingMonster(k, map) {
+	const pointsArr = [293, 294, 295, 296, 297, 298];
+	let monsterCount = 0;
+	let firstEnemyKilledTime = null;
+	let secondEnemyKilledTime = null;
+
+	function getTimeDifferenceInSeconds(start, end) {
+		if (!start || !end) return 0;
+		return (end - start) / 1000;
+	}
+	k.onDestroy("enemy", (monster) => {
+		const currentTime = new Date();
+
+		if (!firstEnemyKilledTime) {
+			firstEnemyKilledTime = currentTime;
+		} else if (!secondEnemyKilledTime) {
+			secondEnemyKilledTime = currentTime;
+		}
+
+		const timeBetween = getTimeDifferenceInSeconds(
+			firstEnemyKilledTime,
+			secondEnemyKilledTime
+		);
+
+		if (timeBetween > 2) {
+			monsterCount = 0;
+			firstEnemyKilledTime = secondEnemyKilledTime;
+			secondEnemyKilledTime = null;
+		}
+		const monsterPosX = monster.pos.x;
+		const monsterPosY = monster.pos.y;
+
+		const points = map.add([
+			k.sprite("assets", {
+				frame: pointsArr[monsterCount],
+			}),
+			k.pos(monsterPosX, monsterPosY - 16),
+			"points",
+		]);
+
+		k.wait(0.5, () => {
+			k.destroy(points);
+		});
+
+		monsterCount++;
+		if (monsterCount === pointsArr.length) {
+			monsterCount = pointsArr.length - 1;
+		}
+
+		if (secondEnemyKilledTime) {
+			firstEnemyKilledTime = secondEnemyKilledTime;
+			secondEnemyKilledTime = null;
+		}
+	});
+}
+export function enterThePipe(player, k, collidedBlock, mapToGo) {
+	player.onCollide(collidedBlock, (block) => {
+		k.tween(
+			player.pos.x,
+			block.pos.x,
+			0.4,
+			(val) => (player.pos.x = val),
+			k.easeInQuad
+		).then(() => {
+			player.z = -1;
+			player.speed = 0;
+			player.direction = null;
+			player.jumpForce = 0;
+			player.collisionIgnore = ["pipes", collidedBlock];
+			k.tween(
+				player.pos.y,
+				player.pos.y + 32,
+				2.0,
+				(val) => (player.pos.y = val),
+				k.easeInQuad
+			).then(() => {
+				k.go(mapToGo);
+			});
+		});
 	});
 }

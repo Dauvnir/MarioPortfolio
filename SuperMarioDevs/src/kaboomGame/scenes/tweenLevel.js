@@ -34,7 +34,7 @@ export async function tweenLevel(k) {
 			drawBoundaries(k, map, layer, "nextWorld");
 		}
 		if (layer.name === "Pipes") {
-			drawBoundaries(k, map, layer);
+			drawBoundaries(k, map, layer, "pipes");
 		}
 		if (layer.name === "Assets") {
 			drawTiles(k, map, layer, mapData.tileheight, mapData.tilewidth);
@@ -46,18 +46,47 @@ export async function tweenLevel(k) {
 	k.setGravity(mapHeight - 16 / 10);
 
 	setPlayerMovement(k, entities.player);
+
 	entities.player.onCollide("coin", (coin) => {
-		// coin.hidden = true;
-		// coin.area.width = 0;
-		// coin.area.height = 0;
-		// coin.area.offset = 0;
-		// coin.area.scale = 0;
-		// coin.area.shape.width = 0;
-		// coin.area.shape.height = 0;
 		k.destroy(coin);
 	});
 
-	entities.player.onCollide("nextWorld", () => {
-		k.go("world2");
+	entities.player.onCollide("nextWorld", (block) => {
+		const player = entities.player;
+		if (player.isGrounded() && player.pos.y > block.pos.y) {
+			player.z = -1;
+			player.speed = 0;
+			player.direction = null;
+			player.jumpForce = 0;
+			player.collisionIgnore = ["pipes", "nextWorld"];
+			player.gravityScale = 0;
+			player.play("player-walking");
+
+			k.tween(
+				player.pos.x,
+				player.pos.x + 4,
+				0.2,
+				(val) => (player.pos.x = val),
+				k.easeInQuad
+			).then(() => {
+				k.tween(
+					player.pos.y,
+					player.pos.y - 4,
+					0.2,
+					(val) => (player.pos.y = val),
+					k.easeInQuad
+				).then(() => {
+					k.tween(
+						player.pos.x,
+						player.pos.x + 32,
+						0.9,
+						(val) => (player.pos.x = val),
+						k.easeInQuad
+					).then(() => {
+						k.go("world2");
+					});
+				});
+			});
+		}
 	});
 }

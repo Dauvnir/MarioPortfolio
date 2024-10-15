@@ -43,6 +43,7 @@ export function generateKoopaHead(k, pos) {
 		k.body(),
 		k.opacity(1),
 		"koopaHead",
+		"enemy",
 	];
 }
 

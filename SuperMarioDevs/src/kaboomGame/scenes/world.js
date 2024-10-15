@@ -13,6 +13,9 @@ import {
 	colorizeBackground,
 	drawBoundaries,
 	drawTiles,
+	enterThePipe,
+	generateCoinsAfterHit,
+	onKillingMonster,
 	playerDeathSentence,
 	setMonsterAi,
 } from "../utils";
@@ -66,10 +69,10 @@ export default async function world(k) {
 			continue;
 		}
 		if (layer.name === "Pipes") {
-			drawBoundaries(k, map, layer);
+			drawBoundaries(k, map, layer, "pipes");
 		}
 		if (layer.name === "ChangeMap") {
-			drawBoundaries(k, map, layer, "changeMap");
+			drawBoundaries(k, map, layer, "nextWorld");
 		}
 		if (layer.name === "Assets") {
 			drawTiles(k, map, layer, mapData.tileheight, mapData.tilewidth);
@@ -114,19 +117,16 @@ export default async function world(k) {
 	setPlayerMovement(k, entities.player);
 
 	for (const goomba of entities.goomba) {
-		setMonsterAi(k, goomba, visibleMap, "goomba-walking");
+		setMonsterAi(k, goomba, visibleMap, "goomba-walking", map);
 	}
 
 	for (const koopa of entities.koopaBody) {
-		setMonsterAi(k, koopa, visibleMap, "koopa-body-walking");
+		setMonsterAi(k, koopa, visibleMap, "koopa-body-walking", map);
 	}
 
-	entities.player.onCollide("changeMap", () => {
-		k.go("tweenLevel");
-	});
 	collidingPlayerWithBlock(k, "questionBlock", entities.player, "box-afterHit");
 	collidingPlayerWithBlock(k, "block", entities.player);
-	collidingPlayerWithGoomba(k, "goomba", entities.player, "goomba-death");
+	collidingPlayerWithGoomba(k, "goomba", entities.player, "goomba-death", map);
 	collidingPlayerWithKoopa(
 		k,
 		"koopaHead",
@@ -137,4 +137,7 @@ export default async function world(k) {
 		"koopa-shell"
 	);
 	playerDeathSentence(k, entities.player, "monster");
+	generateCoinsAfterHit(k, entities.player, "questionBlock", map);
+	onKillingMonster(k, map);
+	enterThePipe(entities.player, k, "nextWorld", "tweenLevel");
 }

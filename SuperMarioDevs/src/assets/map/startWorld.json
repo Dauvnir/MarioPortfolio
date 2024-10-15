@@ -131,15 +131,15 @@
          "name":"partWorld",
          "objects":[
                 {
-                 "height":0,
+                 "height":1,
                  "id":13,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32,
-                 "x":544,
-                 "y":160
+                 "width":24,
+                 "x":548.15625,
+                 "y":159.5
                 }],
          "opacity":1,
          "type":"objectgroup",
