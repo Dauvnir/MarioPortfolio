@@ -126,7 +126,7 @@ export default async function world(k) {
 
 	collidingPlayerWithBlock(k, "questionBlock", entities.player, "box-afterHit");
 	collidingPlayerWithBlock(k, "block", entities.player);
-	collidingPlayerWithGoomba(k, "goomba", entities.player, "goomba-death", map);
+	collidingPlayerWithGoomba(k, "goomba", entities.player, "goomba-death");
 	collidingPlayerWithKoopa(
 		k,
 		"koopaHead",

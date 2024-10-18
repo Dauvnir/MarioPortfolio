@@ -1,6 +1,8 @@
 import { generatePlayer, setPlayerMovement } from "../entities/marioPlayer";
 import {
 	cameraMove,
+	coinCount,
+	collectingPoints,
 	colorizeBackground,
 	drawBoundaries,
 	drawTiles,
@@ -48,12 +50,14 @@ export async function tweenLevel(k) {
 	setPlayerMovement(k, entities.player);
 
 	entities.player.onCollide("coin", (coin) => {
+		collectingPoints();
+		coinCount();
 		k.destroy(coin);
 	});
 
 	entities.player.onCollide("nextWorld", (block) => {
 		const player = entities.player;
-		if (player.isGrounded() && player.pos.y > block.pos.y) {
+		if (player.pos.y > block.pos.y) {
 			player.z = -1;
 			player.speed = 0;
 			player.direction = null;

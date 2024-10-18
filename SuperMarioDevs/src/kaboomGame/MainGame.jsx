@@ -46,5 +46,5 @@ export function mainGame() {
 		k.scene(sceneName, () => scenes[sceneName](k));
 	}
 
-	k.go("tweenLevel");
+	k.go("startWorld");
 }

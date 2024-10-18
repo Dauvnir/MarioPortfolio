@@ -197,7 +197,7 @@ export function drawBoundaries(k, map, layer, tag = "terrain") {
 	}
 }
 
-export function setMonsterAi(k, monster, visibleMap, animation, map) {
+export function setMonsterAi(k, monster, visibleMap, animation) {
 	k.onUpdate(() => {
 		const isVisible = k.camPos().x + visibleMap;
 		if (monster.pos.x < isVisible) {
@@ -229,8 +229,6 @@ export function setMonsterAi(k, monster, visibleMap, animation, map) {
 	monster.onCollide("monster", (mon) => {
 		const isKoopaShell = monster.curAnim() === "koopa-shell";
 		const isGoombaWalking = mon.curAnim() === "goomba-walking";
-		const monPositionOnXaxis = mon.pos.x;
-		const monPositionOnYaxis = mon.pos.y;
 
 		if (isKoopaShell && isGoombaWalking) {
 			mon.area.shape.height = 8;
@@ -238,17 +236,8 @@ export function setMonsterAi(k, monster, visibleMap, animation, map) {
 			mon.speed = 0;
 			mon.collisionIgnore = ["koopa", "goomba", "player"];
 			playAnimIfNotPlaying(mon, "goomba-death");
-			const points = map.add([
-				k.sprite("assets", {
-					frame: 294 - 1,
-				}),
-				k.pos(monPositionOnXaxis, monPositionOnYaxis - 16),
-				k.offscreen(),
-				"100pts",
-			]);
 			k.wait(0.75, () => {
 				k.destroy(mon);
-				k.destroy(points);
 			});
 		}
 
@@ -363,6 +352,8 @@ export function generateCoinsAfterHit(k, player, tag, map) {
 			);
 			k.wait(0.4, () => {
 				k.destroy(coin);
+				coinCount();
+				collectingPoints();
 			});
 		}
 	});
@@ -453,7 +444,44 @@ export function cameraMove(k, mapData, player) {
 
 export function playerDeathSentence(k, player, monsterTag) {
 	let deathTriggered = false;
+	function death(e) {
+		let deathTimer = e.detail.death;
+		if (deathTimer) {
+			deathTriggered = true;
+			player.direction = null;
+			player.speed = 0;
+			player.z = 2;
+			player.collisionIgnore = [
+				"monster",
+				"tile",
+				"koopaHead",
+				"terrain",
+				"pipes",
+			];
+			playAnimIfNotPlaying(player, "player-death");
 
+			k.tween(
+				player.pos.y,
+				player.pos.y - 40,
+				0.5,
+				(val) => (player.pos.y = val),
+				k.easeOutQuad
+			);
+			k.wait(3, () => {
+				k.tween(
+					player.pos.y,
+					player.pos.y + 100,
+					0.75,
+					(val) => (player.pos.y = val),
+					k.easeInQuad
+				).then(() => {
+					k.destroy(player);
+					k.go("startWorld");
+				});
+			});
+		}
+	}
+	document.addEventListener("deathTimer", death);
 	player.onCollide(monsterTag, async (monster) => {
 		if (deathTriggered) {
 			return;
@@ -496,6 +524,7 @@ export function playerDeathSentence(k, player, monsterTag) {
 				).then(() => {
 					k.destroy(player);
 					k.go("startWorld");
+					playerDiedByMonster();
 				});
 			});
 		}
@@ -529,18 +558,22 @@ export function playerDeathSentence(k, player, monsterTag) {
 				).then(() => {
 					k.destroy(player);
 					k.go("startWorld");
+					playerDiedByMonster();
 				});
 			});
 		}
 	});
 }
 export function hugFinishPole(k, player) {
-	let isSliding = false;
 	let firstTile = true;
 	let onPole = false;
+	const lastTileYPos = 192;
+	const timer = new CustomEvent("timer", {
+		detail: {
+			timer: null,
+		},
+	});
 	player.onCollide("pole", () => {
-		if (onPole) return;
-
 		if (firstTile) {
 			player.pos.x = player.worldPos().x + 16;
 			player.speed = 0;
@@ -551,10 +584,9 @@ export function hugFinishPole(k, player) {
 			player.flipX = true;
 			firstTile = false;
 			onPole = true;
-		}
-		if (!isSliding) {
-			isSliding = true;
 			playAnimIfNotPlaying(player, "player-hold-pole");
+		}
+		if (player.pos.y < lastTileYPos) {
 			k.tween(
 				player.pos.y,
 				player.pos.y + 16,
@@ -562,27 +594,32 @@ export function hugFinishPole(k, player) {
 				(val) => (player.pos.y = val),
 				k.easeInQuad
 			);
-		}
-		player.onCollide("blocks", () => {
-			onPole = false;
-			isSliding = false;
-			player.gravityScale = 1;
-			player.z = 1;
-			player.flipX = false;
-			player.jumped = false;
-			player.speed = 50;
-			player.jumpForce = 180;
-			player.direction = "right";
-			playAnimIfNotPlaying(player, "player-walking");
-			k.onUpdate(() => {
-				player.move(player.speed, 0);
+		} else {
+			if (!onPole) return;
+			k.wait(0.3, () => {
+				onPole = false;
+				player.gravityScale = 1;
+				player.z = 1;
+				player.flipX = false;
+				player.jumped = false;
+				player.speed = 30;
+				player.jumpForce = 180;
+				player.direction = "right";
+				playAnimIfNotPlaying(player, "player-walking");
+
+				timer.detail.timer = false;
+				document.dispatchEvent(timer);
+				k.onUpdate(() => {
+					player.move(player.speed, 0);
+				});
 			});
-		});
+		}
 	});
 }
 
 export function onKillingMonster(k, map) {
 	const pointsArr = [293, 294, 295, 296, 297, 298];
+	const pointsValue = [100, 200, 400, 500, 800, 1000];
 	let monsterCount = 0;
 	let firstEnemyKilledTime = null;
 	let secondEnemyKilledTime = null;
@@ -623,6 +660,7 @@ export function onKillingMonster(k, map) {
 
 		k.wait(0.5, () => {
 			k.destroy(points);
+			collectingPoints(pointsValue[monsterCount - 1]);
 		});
 
 		monsterCount++;
@@ -637,6 +675,12 @@ export function onKillingMonster(k, map) {
 	});
 }
 export function enterThePipe(player, k, collidedBlock, mapToGo) {
+	const timer = new CustomEvent("timer", {
+		detail: {
+			timer: null,
+		},
+	});
+
 	player.onCollide(collidedBlock, (block) => {
 		k.tween(
 			player.pos.x,
@@ -657,8 +701,40 @@ export function enterThePipe(player, k, collidedBlock, mapToGo) {
 				(val) => (player.pos.y = val),
 				k.easeInQuad
 			).then(() => {
+				if (mapToGo === "world") {
+					timer.detail.timer = true;
+					document.dispatchEvent(timer);
+				}
 				k.go(mapToGo);
 			});
 		});
 	});
+}
+
+export function collectingPoints(comboPts = 100) {
+	const collectPoints = new CustomEvent("pointsCollected", {
+		detail: {
+			points: comboPts,
+		},
+	});
+
+	document.dispatchEvent(collectPoints);
+}
+
+function playerDiedByMonster() {
+	const playerDied = new CustomEvent("playerDied", {
+		detail: {
+			death: true,
+		},
+	});
+	document.dispatchEvent(playerDied);
+}
+
+export function coinCount() {
+	const sendCoins = new CustomEvent("coinCount", {
+		detail: {
+			coin: 1,
+		},
+	});
+	document.dispatchEvent(sendCoins);
 }
