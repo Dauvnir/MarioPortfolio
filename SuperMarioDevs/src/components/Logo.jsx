@@ -3,9 +3,9 @@ import Warning from "./Warning";
 import PropTypes from "prop-types";
 const Wrapper = styled.div`
 	width: 100%;
-	height: 35%;
+	height: 40%;
 	position: absolute;
-	top: 5rem;
+	top: clamp(3rem, 2rem + 5vh, 7rem);
 	left: 0;
 	z-index: 3;
 	display: flex;
@@ -13,6 +13,9 @@ const Wrapper = styled.div`
 	align-items: center;
 	flex-direction: column;
 	transform: translate(0, 2rem);
+	@media (orientation: portrait) {
+		top: clamp(3rem, 3rem + 8vh, 7rem);
+	}
 	#logoBlock {
 		border-top: 2px solid white;
 		border-left: 2px solid white;
@@ -24,6 +27,7 @@ const Wrapper = styled.div`
 		position: relative;
 		z-index: 2;
 		@media (orientation: landscape) {
+			top: 0;
 			height: 100%;
 			width: clamp(25rem, 45vw, 50rem);
 		}
@@ -115,7 +119,7 @@ const Wrapper = styled.div`
 	}
 `;
 
-const Logo = ({ showWarning = false, handlerShowWarning }) => {
+const Logo = ({ showWarning }) => {
 	return (
 		<>
 			<Wrapper>
@@ -138,13 +142,12 @@ const Logo = ({ showWarning = false, handlerShowWarning }) => {
 					<span>@2024 PATRYK POLAK</span>
 				</p>
 			</Wrapper>
-			{showWarning && <Warning handlerShowWarning={handlerShowWarning} />}
+			<Warning showWarning={showWarning}></Warning>
 		</>
 	);
 };
 
 Logo.propTypes = {
-	showWarning: PropTypes.bool.isRequired,
-	handlerShowWarning: PropTypes.func.isRequired,
+	showWarning: PropTypes.bool,
 };
 export default Logo;

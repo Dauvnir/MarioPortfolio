@@ -68,60 +68,46 @@ const Wrapper = styled.div`
 	p {
 		text-align: left;
 		padding-inline: 1rem;
-		flex-grow: 1;
 		font-size: clamp(0.8rem, 4vw, 2rem);
 		line-height: 2.1rem;
 		overflow: scroll;
-	}
-	#confirm {
-		background-color: green;
-		border: none;
-		width: 60%;
-		min-height: 3rem;
-		border-radius: 25px;
-		margin-bottom: 1rem;
-		cursor: pointer;
-		span {
-			font-size: 1.25rem;
-			color: var(--font-color);
-			font-family: "Press Start 2P", system-ui;
-			font-weight: 400;
-			font-style: normal;
-		}
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0;
+		height: auto;
+		width: 100%;
 	}
 `;
-const Warning = ({ handlerShowWarning }) => {
+const Warning = ({ showWarning }) => {
 	return (
-		<Wrapper>
-			<div id="message">
-				<div className="dotContainer">
-					<div></div>
-					<div></div>
-				</div>
+		showWarning && (
+			<Wrapper>
+				<div id="message">
+					<div className="dotContainer">
+						<div></div>
+						<div></div>
+					</div>
 
-				<h1>Warning!</h1>
-				<h2>Rotate your device</h2>
-				<p>
-					<span>
-						For the best experience, please rotate your phone to landscape mode.
-					</span>
-				</p>
-				<button
-					id="confirm"
-					onClick={handlerShowWarning}
-				>
-					<span>CONFIRM</span>
-				</button>
-				<div className="dotContainer dotContainerBottom">
-					<div></div>
-					<div></div>
+					<h1>Warning!</h1>
+					<h2>Rotate your device</h2>
+					<p>
+						<span>
+							For the best experience, please rotate your phone to landscape
+							mode.
+						</span>
+					</p>
+					<div className="dotContainer dotContainerBottom">
+						<div></div>
+						<div></div>
+					</div>
 				</div>
-			</div>
-		</Wrapper>
+			</Wrapper>
+		)
 	);
 };
 
 Warning.propTypes = {
-	handlerShowWarning: PropTypes.func.isRequired,
+	showWarning: PropTypes.bool,
 };
 export default Warning;

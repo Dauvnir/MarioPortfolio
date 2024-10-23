@@ -6,10 +6,12 @@ import mario from "../assets/welcomePage/mario.png";
 import bushes from "../assets/welcomePage/bushes.png";
 import goomba from "../assets/welcomePage/goomba.png";
 
-const MARIO_MEDIA_WIDTH_1600 = 55;
-
-const MARIO_MEDIA_WIDTH_1330 = 50;
-const MARIO = 40;
+const MARIO_MEDIA_WIDTH_1600 = 40;
+const MARIO_MEDIA_WIDTH_1330 = 35;
+const GOOMBA_MEDIA_WIDTH_1600 = 45;
+const GOOMBA_MEDIA_WIDTH_1330 = 40;
+const GOOMBA = 35;
+const MARIO = 30;
 
 const Wrap = styled.div`
 	height: 10rem;
@@ -87,7 +89,7 @@ const Wrap = styled.div`
 		}
 	}
 	#bowserAndPipe {
-		height: clamp(10rem, 28vh, 14rem);
+		height: clamp(8rem, 8rem + 4vh, 12rem);
 		width: 30%;
 		display: flex;
 		justify-content: center;
@@ -109,16 +111,16 @@ const Wrap = styled.div`
 	#goomba {
 		display: none;
 		height: auto;
-		width: ${MARIO}px;
+		width: ${GOOMBA}px;
 		image-rendering: pixelated;
 		@media (min-width: 700px) {
 			display: block;
 		}
 		@media (min-width: 1330px) {
-			width: ${MARIO_MEDIA_WIDTH_1330}px;
+			width: ${GOOMBA_MEDIA_WIDTH_1330}px;
 		}
 		@media (min-width: 1600px) {
-			width: ${MARIO_MEDIA_WIDTH_1600}px;
+			width: ${GOOMBA_MEDIA_WIDTH_1600}px;
 		}
 	}
 `;

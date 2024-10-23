@@ -567,7 +567,7 @@ export function playerDeathSentence(k, player, monsterTag) {
 export function hugFinishPole(k, player) {
 	let firstTile = true;
 	let onPole = false;
-	const lastTileYPos = 192;
+	const lastTileYPos = 190;
 	const timer = new CustomEvent("timer", {
 		detail: {
 			timer: null,

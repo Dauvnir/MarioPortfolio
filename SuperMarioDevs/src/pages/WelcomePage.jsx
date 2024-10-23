@@ -6,6 +6,7 @@ import Clouds from "../components/Clouds";
 import Logo from "../components/Logo";
 import Text from "../components/Text";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -18,38 +19,41 @@ const Wrapper = styled.div`
 	left: 0;
 	height: 100vh;
 	width: 100vw;
+	background-color: rgb(99, 160, 253);
+	overflow: hidden;
 `;
 const WelcomePage = () => {
-	const [showWarning, setShowWarning] = useState(false);
-
-	const handlerShowWarning = () => {
-		setShowWarning((prev) => !prev);
+	const [showWarning, setShowWarning] = useState(null);
+	const navigate = useNavigate();
+	const handleShowWarning = () => {
+		const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+		if (isLandscape) {
+			setShowWarning(false);
+		} else {
+			setShowWarning(true);
+		}
 	};
 
-	useEffect(() => {
-		function disableWarning() {
-			const isLandscape = window.matchMedia("(orientation: landscape)").matches;
-
-			if (isLandscape) {
-				setShowWarning(false);
-			}
+	const handleShowWarningAndNavigate = () => {
+		const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+		if (isLandscape) {
+			setShowWarning(false);
+			navigate("game");
+		} else {
+			setShowWarning(true);
 		}
-
-		disableWarning();
-
-		window.addEventListener("resize", disableWarning);
-
+	};
+	useEffect(() => {
+		window.addEventListener("resize", handleShowWarning);
 		return () => {
-			window.removeEventListener("resize", disableWarning);
+			window.removeEventListener("resize", handleShowWarning);
 		};
 	}, []);
+
 	return (
 		<Wrapper>
-			<Text handlerShowWarning={handlerShowWarning} />
-			<Logo
-				showWarning={showWarning}
-				handlerShowWarning={handlerShowWarning}
-			/>
+			<Text handleShowWarningAndNavigate={handleShowWarningAndNavigate} />
+			<Logo showWarning={showWarning} />
 			<Clouds />
 			<Blocks />
 			<MarioAndBowser />

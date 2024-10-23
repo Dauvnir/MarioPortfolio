@@ -47,4 +47,12 @@ export function mainGame() {
 	}
 
 	k.go("startWorld");
+
+	function reset() {
+		const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+		if (isLandscape) {
+			window.location.reload();
+		}
+	}
+	window.addEventListener("resize", reset);
 }
