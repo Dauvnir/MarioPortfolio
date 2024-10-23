@@ -83,7 +83,7 @@ const Wrap = styled.div`
 				display: block;
 				width: clamp(12rem, 20vw, 15rem);
 				height: auto;
-				image-rendering: crisp-edges;
+				image-rendering: optimizeQuality;
 				z-index: 2;
 			}
 		}
