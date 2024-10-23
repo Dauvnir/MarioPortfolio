@@ -5,6 +5,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
 	plugins: [react()],
 	build: {
-		minify: false, // Disable minification to check if that's causing the issue
+		minify: true, // Disable minification to check if that's causing the issue
+
+		sourcemap: true,
 	},
 });

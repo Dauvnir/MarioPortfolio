@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 	#clouds {
 		height: auto;
 		width: 10rem;
-		image-rendering: optimizeQuality;
+		image-rendering: pixelated;
 		margin-left: -3rem;
 		margin-top: 4rem;
 		@media (orientation: landscape) {
@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 	#cloud {
 		height: auto;
 		width: 7rem;
-		image-rendering: optimizeQuality;
+		image-rendering: pixelated;
 		margin-top: 3rem;
 		margin-right: 0rem;
 		@media (orientation: landscape) {
@@ -36,7 +36,7 @@ const Wrapper = styled.div`
 	#cloud2 {
 		height: auto;
 		width: 12rem;
-		image-rendering: optimizeQuality;
+		image-rendering: pixelated;
 		margin-top: 3rem;
 		@media (max-width: 999px) {
 			display: none;

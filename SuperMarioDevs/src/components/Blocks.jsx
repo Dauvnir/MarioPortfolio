@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 	#box {
 		width: ${BLOCK_SIZE}px;
 		height: ${BLOCK_SIZE}px;
-		image-rendering: optimizeQuality;
+		image-rendering: pixelatedno;
 	}
 	@media (orientation: landscape) {
 		position: absolute;

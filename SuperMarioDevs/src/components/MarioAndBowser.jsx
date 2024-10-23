@@ -32,7 +32,7 @@ const Wrap = styled.div`
 		#mountain {
 			width: 100%;
 			height: auto;
-			image-rendering: crisp-edges;
+			image-rendering: pixelated;
 			max-width: 240px;
 			position: absolute;
 			bottom: 0;
@@ -77,13 +77,14 @@ const Wrap = styled.div`
 			display: flex;
 			justify-content: center;
 			align-items: flex-end;
+			image-rendering: pixelated;
 		}
 		#bushes {
 			@media (orientation: landscape) {
 				display: block;
 				width: clamp(12rem, 20vw, 15rem);
 				height: auto;
-				image-rendering: optimizeQuality;
+				image-rendering: pixelated;
 				z-index: 2;
 			}
 		}
