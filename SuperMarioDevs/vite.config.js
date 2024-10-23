@@ -5,8 +5,11 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
 	plugins: [react()],
 	build: {
-		minify: true, // Disable minification to check if that's causing the issue
-
-		sourcemap: true,
+		minify: "terser",
+		terserOptions: {
+			mangle: {
+				reserved: ["kaboom"], // Zablokowanie minifikacji nazw kluczowych dla Kaboom
+			},
+		},
 	},
 });
