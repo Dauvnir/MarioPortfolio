@@ -11,7 +11,7 @@ import {
 
 export async function tweenLevel(k) {
 	colorizeBackground(k, 0, 0, 0);
-	const mapData = await fetchMapData("./src/assets/map/tweenLevel.json");
+	const mapData = await fetchMapData("/map/tweenLevel.json");
 	const map = k.add([k.pos(0, 0)]);
 	const entities = {
 		player: null,

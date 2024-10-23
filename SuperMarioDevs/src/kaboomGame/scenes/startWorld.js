@@ -11,7 +11,8 @@ import {
 
 export async function startWorld(k) {
 	colorizeBackground(k, 99, 160, 253);
-	const mapData = await fetchMapData("./src/assets/map/startWorld.json");
+	const mapData = await fetchMapData("/map/startWorld.json");
+	console.log(mapData);
 	const map = k.add([0, 0]);
 	const mapHeight = mapData.height * mapData.tileheight;
 	const entities = {

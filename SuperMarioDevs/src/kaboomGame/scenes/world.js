@@ -22,7 +22,7 @@ import {
 import { fetchMapData } from "../utils";
 export default async function world(k) {
 	colorizeBackground(k, 99, 160, 253);
-	const mapData = await fetchMapData("./src/assets/map/world1.json");
+	const mapData = await fetchMapData("/map/world1.json");
 	const map = k.add([k.pos(0, 0)]);
 	const windowHeight = window.innerHeight;
 	const mapWidth = mapData.width * mapData.tilewidth;

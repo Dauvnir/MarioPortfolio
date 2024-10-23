@@ -24,7 +24,7 @@ import {
 export default async function world2(k) {
 	colorizeBackground(k, 99, 160, 253);
 
-	const mapData = await fetchMapData("./src/assets/map/world2.json");
+	const mapData = await fetchMapData("/map/world2.json");
 	const map = k.add([k.pos(0, 0)]);
 	const mapHeight = mapData.height * mapData.tileheight;
 	const windowHeight = window.innerHeight;
