@@ -5,10 +5,14 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
 	plugins: [react()],
 	build: {
-		minify: "terser",
-		terserOptions: {
-			mangle: {
-				reserved: ["kaboom"], // Zablokowanie minifikacji nazw kluczowych dla Kaboom
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					if (id.includes("kaboom")) {
+						// Utwórz osobny chunk dla kaboom.mjs
+						return "kaboom";
+					}
+				},
 			},
 		},
 	},
