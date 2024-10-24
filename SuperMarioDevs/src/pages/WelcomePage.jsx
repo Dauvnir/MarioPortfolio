@@ -17,9 +17,8 @@ const Wrapper = styled.div`
 	z-index: 1;
 	bottom: 0;
 	left: 0;
-	height: 100vh;
-	height: 100svh;
-	width: 100vw;
+	width: 100%;
+	height: inherit;
 	background-color: rgb(99, 160, 253);
 	overflow: hidden;
 `;

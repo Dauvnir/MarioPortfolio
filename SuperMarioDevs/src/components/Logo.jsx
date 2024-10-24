@@ -50,7 +50,7 @@ const Wrapper = styled.div`
 			div {
 				border-radius: 100%;
 				width: clamp(5px, 2vw, 10px);
-				height: clamp(5px, 2svh, 10px);
+				height: clamp(5px, 2vw, 10px);
 				background-color: var(--logo-color);
 				box-shadow: 1px 2px 0px 0px black;
 			}
@@ -75,12 +75,12 @@ const Wrapper = styled.div`
 			text-shadow: 2px 4px 0px black;
 			span {
 				color: var(--logo-color);
-				line-height: clamp(1.5rem, 10svh, 5rem);
+				line-height: clamp(1.5rem, 10vh, 5rem);
 				@media (orientation: landscape) {
-					line-height: clamp(1.5rem, 10svh, 5.5rem);
+					line-height: clamp(1.5rem, 1.5rem + 6vh, 5.5rem);
 				}
 				@media (min-width: 1600px) {
-					line-height: clamp(1.5rem, 13svh, 7rem);
+					line-height: clamp(1.5rem, 1.5rem + 13vh, 7rem);
 				}
 			}
 			#super {
@@ -89,7 +89,7 @@ const Wrapper = styled.div`
 					font-size: clamp(1rem, 5vw, 5rem);
 				}
 				@media (min-width: 1600px) {
-					font-size: clamp(1rem, 6vw, 7rem);
+					font-size: clamp(1rem, 6vw, 5.5rem);
 				}
 			}
 			#marioLogo {
