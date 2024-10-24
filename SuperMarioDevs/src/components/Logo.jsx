@@ -5,7 +5,7 @@ const Wrapper = styled.div`
 	width: 100%;
 	height: 40%;
 	position: absolute;
-	top: clamp(3rem, 2rem + 5vh, 7rem);
+	top: clamp(3rem, 2rem + 5svh, 7rem);
 	left: 0;
 	z-index: 3;
 	display: flex;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	transform: translate(0, 2rem);
 	@media (orientation: portrait) {
-		top: clamp(3rem, 3rem + 8vh, 7rem);
+		top: clamp(3rem, 3rem + 8svh, 7rem); //ch her
 	}
 	#logoBlock {
 		border-top: 2px solid white;
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 		border-right: 2px solid black;
 		border-bottom: 2px solid black;
 		background-color: var(--block-color);
-		height: clamp(8rem, 20vh, 20rem);
+		height: clamp(8rem, 20svh, 20rem);
 		width: clamp(20rem, 80vw, 35rem);
 		position: relative;
 		z-index: 2;
@@ -50,7 +50,7 @@ const Wrapper = styled.div`
 			div {
 				border-radius: 100%;
 				width: clamp(5px, 2vw, 10px);
-				height: clamp(5px, 2vh, 10px);
+				height: clamp(5px, 2svh, 10px);
 				background-color: var(--logo-color);
 				box-shadow: 1px 2px 0px 0px black;
 			}
@@ -75,12 +75,12 @@ const Wrapper = styled.div`
 			text-shadow: 2px 4px 0px black;
 			span {
 				color: var(--logo-color);
-				line-height: clamp(1.5rem, 10vh, 5rem);
+				line-height: clamp(1.5rem, 10svh, 5rem);
 				@media (orientation: landscape) {
-					line-height: clamp(1.5rem, 14vh, 5.5rem);
+					line-height: clamp(1.5rem, 14svh, 5.5rem);
 				}
 				@media (min-width: 1600px) {
-					line-height: clamp(1.5rem, 13vh, 7rem);
+					line-height: clamp(1.5rem, 13svh, 7rem);
 				}
 			}
 			#super {

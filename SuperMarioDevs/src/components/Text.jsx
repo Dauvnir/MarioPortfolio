@@ -39,7 +39,7 @@ const Wrapper = styled.div`
 		align-items: end;
 		flex-direction: row;
 		font-size: clamp(1rem, 0.5rem + 1vw, 3rem);
-		padding: 2rem;
+		padding: 1rem 2rem 0 2rem;
 		margin-bottom: 5rem;
 		@media (orientation: portrait) {
 			opacity: 0;
