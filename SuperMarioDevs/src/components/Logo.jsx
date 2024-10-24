@@ -77,7 +77,7 @@ const Wrapper = styled.div`
 				color: var(--logo-color);
 				line-height: clamp(1.5rem, 10svh, 5rem);
 				@media (orientation: landscape) {
-					line-height: clamp(1.5rem, 14svh, 5.5rem);
+					line-height: clamp(1.5rem, 10svh, 5.5rem);
 				}
 				@media (min-width: 1600px) {
 					line-height: clamp(1.5rem, 13svh, 7rem);
