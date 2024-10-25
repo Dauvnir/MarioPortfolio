@@ -1,149 +1,140 @@
 import styled from "styled-components";
 import Warning from "./Warning";
 import PropTypes from "prop-types";
+
 const Wrapper = styled.div`
-	width: 100%;
-	height: 40%;
 	position: absolute;
-	top: clamp(3rem, 2rem + 5svh, 7rem);
-	left: 0;
-	z-index: 3;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	transform: translate(0, 2rem);
-	@media (orientation: portrait) {
-		top: clamp(3rem, 3rem + 8svh, 7rem); //ch her
+	z-index: 4;
+	@media (orientation: landscape) {
+		z-index: 3;
 	}
+	height: 100%;
+	width: 100%;
+
+	display: flex;
+	flex-direction: column;
+
 	#logoBlock {
+		height: fit-content;
+		width: clamp(15rem, 80%, 30rem);
+
+		background-color: var(--block-color);
+
+		margin-inline: auto;
+		margin-top: clamp(2.5rem, 2.5rem + 5vw, 6rem); /// maybe clamp
+		@media (max-height: 450px) {
+			margin-top: 1rem;
+		}
+
 		border-top: 2px solid white;
 		border-left: 2px solid white;
 		border-right: 2px solid black;
 		border-bottom: 2px solid black;
-		background-color: var(--block-color);
-		height: clamp(8rem, 20svh, 20rem);
-		width: clamp(20rem, 80vw, 35rem);
-		position: relative;
-		z-index: 2;
-		@media (orientation: landscape) {
-			top: 0;
-			height: 100%;
-			width: clamp(25rem, 45vw, 50rem);
-		}
 		@media (min-width: 1000px) {
 			border-top: 4px solid white;
 			border-left: 4px solid white;
 			border-right: 4px solid black;
 			border-bottom: 4px solid black;
 		}
-		.dotContainer {
-			z-index: 3;
-			position: relative;
+
+		overflow: hidden;
+
+		p {
 			width: 100%;
-			height: 50%;
+			height: auto;
+
+			padding: 0.5rem 1rem;
+			span {
+				text-shadow: 2px 4px 0px black;
+				color: var(--logo-color);
+			}
+			#super {
+				font-size: clamp(2rem, 2rem + 5vw, 5rem);
+
+				@media (orientation: landscape) {
+					font-size: clamp(1rem, 1rem + 6vh, 5rem);
+				}
+			}
+			#marioDevs {
+				font-size: clamp(0.75rem, 0.75rem + 3vw, 2.5rem);
+				white-space: nowrap;
+
+				@media (orientation: landscape) {
+					font-size: clamp(0.75rem, 0.75rem + 4vh, 2.5rem);
+				}
+			}
+		}
+
+		.dotContainer {
+			width: 100%;
+			height: auto;
+
 			display: flex;
 			justify-content: space-between;
 			align-items: start;
-			padding-inline: 0.25rem;
-			padding-top: 0.25rem;
+
+			padding: 0.5rem 0.5rem 0 0.5rem;
+
 			div {
 				border-radius: 100%;
-				width: clamp(5px, 2vw, 10px);
-				height: clamp(5px, 2vw, 10px);
+
+				width: clamp(5px, 5px + 2vw, 10px);
+				height: clamp(5px, 5px + 2vw, 10px);
+
 				background-color: var(--logo-color);
 				box-shadow: 1px 2px 0px 0px black;
 			}
 		}
 		.dotContainerBottom {
 			align-items: end;
+
 			padding-top: 0;
-			padding-bottom: 0.25rem;
-		}
-		p {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-			top: 0;
-			left: 0;
-			padding: 1rem;
-			margin: 0;
-			display: flex;
-			justify-content: center;
-			align-items: start;
-			flex-direction: column;
-			text-shadow: 2px 4px 0px black;
-			span {
-				color: var(--logo-color);
-				line-height: clamp(1.5rem, 10vh, 5rem);
-				@media (orientation: landscape) {
-					line-height: clamp(1.5rem, 1.5rem + 6vh, 5.5rem);
-				}
-				@media (min-width: 1600px) {
-					line-height: clamp(1.5rem, 1.5rem + 13vh, 7rem);
-				}
-			}
-			#super {
-				font-size: clamp(1.8rem, 12vw, 4rem);
-				@media (orientation: landscape) {
-					font-size: clamp(1rem, 5vw, 5rem);
-				}
-				@media (min-width: 1600px) {
-					font-size: clamp(1rem, 6vw, 5.5rem);
-				}
-			}
-			#marioLogo {
-				font-size: clamp(1rem, 6.9vw, 3rem);
-				white-space: nowrap;
-				@media (orientation: landscape) {
-					font-size: clamp(1rem, 4vw, 4rem);
-				}
-				@media (min-width: 1600px) {
-					font-size: clamp(1rem, 10vw, 4rem);
-				}
-			}
+			padding-bottom: 0.5rem;
 		}
 	}
+
 	#signature {
-		width: clamp(20rem, 80vw, 35rem);
+		width: clamp(15rem, 80%, 30rem);
 		height: auto;
+
+		margin-inline: auto;
+		margin-top: 0.25rem;
+
+		text-align: right;
 		color: var(--logo-color);
 		text-shadow: 1px 2px 0px black;
-		font-size: clamp(1rem, 2vw, 2rem);
-		text-align: right;
-		margin: 0 auto auto auto;
 		white-space: nowrap;
+		font-size: clamp(0.75rem, 0.75rem + 1vw, 2rem);
+
 		@media (orientation: landscape) {
-			width: clamp(25rem, 45vw, 50rem);
+			font-size: clamp(0.5rem, 0.5rem + 1vw, 2rem);
 		}
 	}
 `;
-
 const Logo = ({ showWarning }) => {
 	return (
-		<>
-			<Wrapper>
-				<div id="logoBlock">
-					<div className="dotContainer">
-						<div></div>
-						<div></div>
-					</div>
-					<div className="dotContainer dotContainerBottom">
-						<div></div>
-						<div></div>
-					</div>
-					<p>
-						<span id="super">SUPER</span>
-						<br />
-						<span id="marioLogo">MARIO DEVS.</span>
-					</p>
+		<Wrapper>
+			<div id="logoBlock">
+				<div className="dotContainer">
+					<div></div>
+					<div></div>
 				</div>
-				<p id="signature">
-					<span>@2024 PATRYK POLAK</span>
+				<p>
+					<span id="super">SUPER</span>
+					<br />
+					<br />
+					<span id="marioDevs">MARIO DEVS.</span>
 				</p>
-			</Wrapper>
-			<Warning showWarning={showWarning}></Warning>
-		</>
+				<div className="dotContainer dotContainerBottom">
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+			<p id="signature">
+				<span>@2024 PATRYK POLAK</span>
+			</p>
+			{showWarning && <Warning />}
+		</Wrapper>
 	);
 };
 

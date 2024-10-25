@@ -42,6 +42,9 @@ const Wrapper = styled.div`
 		padding: 1rem 2rem 0 2rem;
 		margin-bottom: 5rem;
 		@media (orientation: portrait) {
+			display: none;
+		}
+		@media (max-height: 450px) {
 			opacity: 0;
 		}
 		p {
@@ -79,8 +82,8 @@ const Wrapper = styled.div`
 			color: var(--font-color);
 			position: absolute;
 			left: 50%;
-			top: 60%;
-			transform: translate(-50%, -50%);
+			top: 70%;
+			transform: translate(-50%, -70%);
 			text-shadow: 1px 1px 0px black;
 			font-size: clamp(1rem, 0.85rem + 1vw, 4rem);
 			font-family: "Press Start 2P", system-ui;
@@ -96,7 +99,7 @@ const Wrapper = styled.div`
 		width: 100%;
 		height: auto;
 		@media (orientation: portrait) {
-			opacity: 0;
+			display: none;
 		}
 		span {
 			font-size: clamp(1rem, 0.75rem + 1vw, 3rem);

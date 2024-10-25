@@ -13,11 +13,8 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	justify-content: end;
 	align-items: center;
-	position: absolute;
-	z-index: 1;
-	bottom: 0;
-	left: 0;
 	width: 100%;
+	height: 100svh;
 	height: inherit;
 	background-color: rgb(99, 160, 253);
 	overflow: hidden;

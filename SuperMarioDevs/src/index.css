@@ -15,14 +15,16 @@ body,
 	box-sizing: border-box;
 	height: 100vh;
 	height: 100svh;
-	/* height: calc(100vh - 50px); */
+	/* height: calc(100vh - 55px); */
 	width: 100vw;
-	/* background-color: var(--background-color); */
 	background-color: none;
 	font-family: "Press Start 2P", system-ui;
 	font-weight: 400;
 	font-style: normal;
 	color: var(--font-color);
+	position: absolute;
+	left: 0;
+	bottom: 0;
 }
 * {
 	margin: 0;
