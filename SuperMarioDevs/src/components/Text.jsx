@@ -84,6 +84,10 @@ const Wrapper = styled.div`
 			left: 50%;
 			top: 70%;
 			transform: translate(-50%, -70%);
+			@media (orientation: portrait) {
+				top: 60%;
+				transform: translate(-50%, -60%);
+			}
 			text-shadow: 1px 1px 0px black;
 			font-size: clamp(1rem, 0.85rem + 1vw, 4rem);
 			font-family: "Press Start 2P", system-ui;

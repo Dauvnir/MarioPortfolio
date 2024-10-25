@@ -113,7 +113,7 @@ const Wrapper = styled.div`
 `;
 const Logo = ({ showWarning }) => {
 	return (
-		<Wrapper>
+		<Wrapper style={{ zIndex: !showWarning ? 3 : 4 }}>
 			<div id="logoBlock">
 				<div className="dotContainer">
 					<div></div>
