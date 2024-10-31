@@ -53,7 +53,7 @@ export async function startWorld(k) {
 	k.setGravity(mapHeight - 16 / 10);
 
 	setPlayerMovement(k, entities.player);
-	touchPlayerMovement(entities.player);
+	touchPlayerMovement(k, entities.player);
 
 	collidingPlayerWithBlockAndShowProfile(
 		k,
