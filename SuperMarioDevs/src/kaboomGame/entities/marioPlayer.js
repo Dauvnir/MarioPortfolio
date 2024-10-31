@@ -51,7 +51,7 @@ export function setPlayerMovement(k, player) {
 			return;
 		}
 		if (["d"].includes(key)) {
-			player.speed = 140;
+			player.speed = 110;
 			player.animSpeed = 2;
 			player.isSprinting = true;
 		}
@@ -92,6 +92,55 @@ export function setPlayerMovement(k, player) {
 		) {
 			playAnimIfNotPlaying(player, "player-idle");
 			player.jumped = false;
+		}
+	});
+}
+
+export function touchPlayerMovement(player) {
+	document.addEventListener("touch", (event) => {
+		const { start, direction, jump, sprint } = event.detail;
+		console.log(event.detail);
+		if (start && direction === "left") {
+			player.flipX = true;
+			player.direction = "left";
+			player.isIdle = false;
+			player.move(-player.speed, 0);
+			if (player.isGrounded()) {
+				playAnimIfNotPlaying(player, "player-walking");
+			}
+		}
+		if (start && direction === "right") {
+			player.flipX = false;
+			player.direction = "right";
+			player.isIdle = false;
+			player.move(player.speed, 0);
+			if (player.isGrounded()) {
+				playAnimIfNotPlaying(player, "player-walking");
+			}
+		}
+		if (jump) {
+			playAnimIfNotPlaying(player, "player-jump");
+			if (player.isGrounded()) {
+				player.jump(player.jumpforce);
+				player.jumped = true;
+				player.isIdle = false;
+			}
+		}
+		if (sprint) {
+			player.speed = 110;
+			player.animSpeed = 2;
+			player.isSprinting = true;
+		}
+
+		if (!start && !jump && !sprint) {
+			player.speed = 70;
+			player.animSpeed = 1;
+			player.isSprinting = false;
+			if (player.direction === null) return;
+			if (player.isGrounded() && player.curAnim() !== "player-hold-pole") {
+				player.isIdle = true;
+				playAnimIfNotPlaying(player, "player-idle");
+			}
 		}
 	});
 }

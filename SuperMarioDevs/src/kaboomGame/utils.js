@@ -26,6 +26,7 @@ export async function fetchMapData(mapPath) {
 
 export function drawTiles(k, map, layer, tileheight, tilewidth) {
 	let nbOfDrawnTiles = 0;
+	const windowWidth = window.innerWidth;
 	const tilePos = k.vec2(0, 0);
 
 	for (const tile of layer.data) {
@@ -159,6 +160,23 @@ export function drawTiles(k, map, layer, tileheight, tilewidth) {
 					k.offscreen(),
 					"tile",
 					"pipe",
+				]);
+				break;
+			case 300:
+			case 301:
+			case 302:
+			case 303:
+			case 304:
+			case 305:
+			case 306:
+				if (windowWidth < 1024) {
+					break;
+				}
+				map.add([
+					k.sprite("assets", { frame: tile - 1 }),
+					k.pos(tilePos),
+					k.offscreen(),
+					"tile",
 				]);
 				break;
 			default:
@@ -414,12 +432,16 @@ export async function collidingPlayerWithKoopa(
 	});
 }
 export function cameraMove(k, mapData, player) {
-	const windowHeight = window.innerHeight;
+	const canvas = document.querySelector("canvas");
+	const windowHeight = canvas.clientHeight;
+	const windowWidth = canvas.clientWidth;
+	console.log(windowHeight);
+	console.log(windowWidth);
 	const mapHeight = mapData.height * mapData.tileheight;
 	const camPosY = mapHeight / 2 + 14;
 	const mapWidth = mapData.width * mapData.tilewidth;
 	const scale = parseFloat((windowHeight / mapHeight).toFixed(1));
-	const threshold = Math.round(mapWidth - k.width() / 2 / scale);
+	const threshold = Math.round(mapWidth - windowWidth / 2 / scale);
 	const visibleMap = Math.round(mapWidth - threshold);
 
 	k.camScale(scale);
@@ -434,7 +456,17 @@ export function cameraMove(k, mapData, player) {
 			k.camPos(k.vec2(threshold, camPosY));
 		}
 		if (marioPosX > camPosX && marioPosX < threshold) {
-			k.camPos(k.vec2(marioPosX, camPosY));
+			// k.camPos(k.vec2(marioPosX, camPosY));
+			k.tween(
+				camPosX,
+				marioPosX,
+				0.2,
+				(val) => {
+					camPosX = Math.round(val);
+					k.camPos(k.vec2(camPosX, camPosY));
+				},
+				k.easeLinear
+			);
 		}
 		if (player.pos.x <= leftMapBoundaries) {
 			player.pos.x = leftMapBoundaries + 1;

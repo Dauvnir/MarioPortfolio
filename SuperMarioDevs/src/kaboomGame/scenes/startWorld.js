@@ -1,4 +1,8 @@
-import { generatePlayer, setPlayerMovement } from "../entities/marioPlayer";
+import {
+	generatePlayer,
+	setPlayerMovement,
+	touchPlayerMovement,
+} from "../entities/marioPlayer";
 import {
 	cameraMove,
 	colorizeBackground,
@@ -49,6 +53,7 @@ export async function startWorld(k) {
 	k.setGravity(mapHeight - 16 / 10);
 
 	setPlayerMovement(k, entities.player);
+	touchPlayerMovement(entities.player);
 
 	collidingPlayerWithBlockAndShowProfile(
 		k,
