@@ -4,7 +4,11 @@ import {
 	generateKoopaHead,
 	synchroniseHead,
 } from "../entities/koopa";
-import { generatePlayer, setPlayerMovement } from "../entities/marioPlayer";
+import {
+	generatePlayer,
+	setPlayerMovement,
+	touchPlayerMovement,
+} from "../entities/marioPlayer";
 import {
 	cameraMove,
 	collidingPlayerWithBlock,
@@ -115,6 +119,7 @@ export default async function world2(k) {
 	});
 	k.setGravity(mapHeight - 16 / 10);
 	setPlayerMovement(k, entities.player);
+	touchPlayerMovement(k, entities.player);
 
 	for (const goomba of entities.goomba) {
 		setMonsterAi(k, goomba, visibleMap, "goomba-walking", map);

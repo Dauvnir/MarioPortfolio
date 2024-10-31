@@ -1,4 +1,8 @@
-import { generatePlayer, setPlayerMovement } from "../entities/marioPlayer";
+import {
+	generatePlayer,
+	setPlayerMovement,
+	touchPlayerMovement,
+} from "../entities/marioPlayer";
 import {
 	cameraMove,
 	coinCount,
@@ -48,6 +52,7 @@ export async function tweenLevel(k) {
 	k.setGravity(mapHeight - 16 / 10);
 
 	setPlayerMovement(k, entities.player);
+	touchPlayerMovement(k, entities.player);
 
 	entities.player.onCollide("coin", (coin) => {
 		collectingPoints();
