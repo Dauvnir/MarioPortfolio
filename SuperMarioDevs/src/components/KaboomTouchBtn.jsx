@@ -78,10 +78,15 @@ const KaboomTouchBtn = () => {
 			<div id="arrowBtns">
 				<button
 					id="alignRight"
-					onTouchStart={() =>
-						dispatchEvents({ direction: "left", start: true })
-					}
-					onTouchEnd={() => dispatchEvents({ direction: null, start: false })}
+					onTouchStart={(e) => {
+						e.preventDefault();
+						dispatchEvents({ direction: "left", start: true });
+					}}
+					onTouchEnd={(e) => {
+						e.preventDefault();
+						dispatchEvents({ direction: "left", start: true });
+						dispatchEvents({ direction: null, start: false });
+					}}
 				>
 					<img
 						src={left}
@@ -89,10 +94,14 @@ const KaboomTouchBtn = () => {
 					/>
 				</button>
 				<button
-					onTouchStart={() =>
-						dispatchEvents({ direction: "right", start: true })
-					}
-					onTouchEnd={() => dispatchEvents({ direction: null, start: false })}
+					onTouchStart={(e) => {
+						e.preventDefault();
+						dispatchEvents({ direction: "right", start: true });
+					}}
+					onTouchEnd={(e) => {
+						e.preventDefault();
+						dispatchEvents({ direction: null, start: false });
+					}}
 				>
 					<img
 						src={right}
@@ -103,8 +112,14 @@ const KaboomTouchBtn = () => {
 			<div>
 				<button
 					className="alignLeft"
-					onTouchStart={() => dispatchEvents({ jump: true })}
-					onTouchEnd={() => dispatchEvents({ jump: false })}
+					onTouchStart={(e) => {
+						e.preventDefault();
+						dispatchEvents({ jump: true });
+					}}
+					onTouchEnd={(e) => {
+						e.preventDefault();
+						dispatchEvents({ jump: false });
+					}}
 				>
 					<img
 						src={jump}
@@ -113,8 +128,14 @@ const KaboomTouchBtn = () => {
 				</button>
 				<button
 					className="alignLeft"
-					onTouchStart={() => dispatchEvents({ sprint: true })}
-					onTouchEnd={() => dispatchEvents({ sprint: false })}
+					onTouchStart={(e) => {
+						e.preventDefault();
+						dispatchEvents({ sprint: true });
+					}}
+					onTouchEnd={(e) => {
+						e.preventDefault();
+						dispatchEvents({ sprint: false });
+					}}
 				>
 					<img
 						src={sprint}
