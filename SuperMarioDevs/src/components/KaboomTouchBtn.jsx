@@ -66,11 +66,24 @@ const Wrapper = styled.div`
 		justify-content: left !important;
 	}
 `;
-function dispatchEvents({ direction, jump, sprint } = {}) {
-	const event = new CustomEvent("touch", {
-		detail: { direction, jump, sprint },
+function dispatchDirection(direction = null) {
+	const event = new CustomEvent("direction", {
+		detail: direction,
 	});
+	document.dispatchEvent(event);
+}
 
+function dispatchJump(jump = false) {
+	const event = new CustomEvent("jump", {
+		detail: jump,
+	});
+	document.dispatchEvent(event);
+}
+
+function dispatchSprint(sprint = false) {
+	const event = new CustomEvent("sprint", {
+		detail: sprint,
+	});
 	document.dispatchEvent(event);
 }
 
@@ -88,8 +101,8 @@ const KaboomTouchBtn = () => {
 			<div id="arrowBtns">
 				<button
 					id="alignRight"
-					onTouchStart={() => dispatchEvents({ direction: "left" })}
-					onTouchEnd={() => dispatchEvents({ direction: null })}
+					onTouchStart={() => dispatchDirection("left")}
+					onTouchEnd={() => dispatchDirection(null)}
 				>
 					<img
 						src={left}
@@ -98,8 +111,8 @@ const KaboomTouchBtn = () => {
 					/>
 				</button>
 				<button
-					onTouchStart={() => dispatchEvents({ direction: "right" })}
-					onTouchEnd={() => dispatchEvents({ direction: null })}
+					onTouchStart={() => dispatchDirection("right")}
+					onTouchEnd={() => dispatchDirection(null)}
 				>
 					<img
 						src={right}
@@ -111,8 +124,8 @@ const KaboomTouchBtn = () => {
 			<div>
 				<button
 					className="alignLeft"
-					onTouchStart={() => dispatchEvents({ jump: true })}
-					onTouchEnd={() => dispatchEvents({ jump: false })}
+					onTouchStart={() => dispatchJump(true)}
+					onTouchEnd={() => dispatchJump(false)}
 				>
 					<img
 						src={jump}
@@ -122,8 +135,8 @@ const KaboomTouchBtn = () => {
 				</button>
 				<button
 					className="alignLeft"
-					onTouchStart={() => dispatchEvents({ sprint: true })}
-					onTouchEnd={() => dispatchEvents({ sprint: false })}
+					onTouchStart={() => dispatchSprint(true)}
+					onTouchEnd={() => dispatchSprint(false)}
 				>
 					<img
 						src={sprint}

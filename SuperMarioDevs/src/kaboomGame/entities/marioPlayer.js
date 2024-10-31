@@ -103,13 +103,21 @@ export function touchPlayerMovement(k, player) {
 	let isSprinting = false;
 
 	// Listen to the custom "touch" event dispatched from React
-	document.addEventListener("touch", (event) => {
-		const { direction, jump, sprint } = event.detail;
+	document.addEventListener("direction", (event) => {
+		const direction = event.detail;
 		move = direction;
+		console.log(move);
+	});
+	document.addEventListener("jump", (event) => {
+		const jump = event.detail;
+		isJumping = jump;
 		isJumping = jump !== null ? jump : isJumping;
+	});
+	document.addEventListener("sprint", (event) => {
+		const sprint = event.detail;
+		isSprinting = sprint;
 		isSprinting = sprint !== null ? sprint : isSprinting;
 	});
-
 	// Kaboom update function to handle continuous movement
 	k.onUpdate(() => {
 		if (move === "left") {
