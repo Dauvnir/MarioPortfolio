@@ -586,18 +586,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":82,
-                 "name":"goomba",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":279,
-                 "y":204.5
-                }, 
-                {
-                 "height":0,
                  "id":83,
                  "name":"goomba",
                  "point":true,
@@ -607,18 +595,6 @@
                  "width":0,
                  "x":247,
                  "y":205.75
-                }, 
-                {
-                 "height":0,
-                 "id":84,
-                 "name":"goomba",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":488.25,
-                 "y":204
                 }, 
                 {
                  "height":0,
@@ -641,20 +617,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":627.5,
-                 "y":76
-                }, 
-                {
-                 "height":0,
-                 "id":87,
-                 "name":"goomba",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":597.5,
-                 "y":76.5
+                 "x":582.5,
+                 "y":205.5
                 }, 
                 {
                  "height":0,
@@ -703,18 +667,6 @@
                  "width":0,
                  "x":1387,
                  "y":204
-                }, 
-                {
-                 "height":0,
-                 "id":99,
-                 "name":"goomba",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1356,
-                 "y":204
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -732,7 +684,7 @@
         {
          "columns":36,
          "firstgid":1,
-         "image":"..\/tilesets\/Tileset.png",
+         "image":"..\/..\/src\/assets\/tilesets\/Tileset.png",
          "imageheight":176,
          "imagewidth":576,
          "margin":0,

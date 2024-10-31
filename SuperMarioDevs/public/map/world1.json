@@ -114,8 +114,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1319.45454545455,
-                 "y":76.5454545454545
+                 "x":1254.95454545455,
+                 "y":140.545454545455
                 }, 
                 {
                  "height":0,
@@ -128,18 +128,6 @@
                  "width":0,
                  "x":1575.60606060606,
                  "y":204.727272727273
-                }, 
-                {
-                 "height":0,
-                 "id":107,
-                 "name":"goomba",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1592.81818181818,
-                 "y":204.606060606061
                 }, 
                 {
                  "height":0,
@@ -188,18 +176,6 @@
                  "width":0,
                  "x":1366.5,
                  "y":196
-                }, 
-                {
-                 "height":0,
-                 "id":157,
-                 "name":"goomba",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1095.5,
-                 "y":206
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -371,7 +347,7 @@
         {
          "columns":36,
          "firstgid":1,
-         "image":"..\/tilesets\/Tileset.png",
+         "image":"..\/..\/src\/assets\/tilesets\/Tileset.png",
          "imageheight":176,
          "imagewidth":576,
          "margin":0,

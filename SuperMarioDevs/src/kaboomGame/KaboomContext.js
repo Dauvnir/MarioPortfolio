@@ -7,7 +7,7 @@ export const kaboomContext = (canvasElement) => {
 		k = kaboom({
 			global: false,
 			canvas: canvasElement,
-			debug: true,
+			debug: false,
 		});
 	}
 	return k;
