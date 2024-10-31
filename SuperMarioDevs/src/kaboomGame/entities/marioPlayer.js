@@ -96,43 +96,48 @@ export function setPlayerMovement(k, player) {
 	});
 }
 
+// Define the touchPlayerMovement function
 export function touchPlayerMovement(k, player) {
-	let moveLeft = false;
-	let moveRight = false;
+	let move = null;
 	let isJumping = false;
 	let isSprinting = false;
 
+	// Listen to the custom "touch" event dispatched from React
 	document.addEventListener("touch", (event) => {
-		const { start, direction, jump, sprint } = event.detail;
-
-		if (direction === "left") moveLeft = start;
-		if (direction === "right") moveRight = start;
-		if (jump !== null) isJumping = jump;
-		if (sprint !== null) isSprinting = sprint;
+		const { direction, jump, sprint } = event.detail;
+		move = direction;
+		isJumping = jump !== null ? jump : isJumping;
+		isSprinting = sprint !== null ? sprint : isSprinting;
 	});
 
 	// Kaboom update function to handle continuous movement
-	k.update(() => {
-		if (moveLeft) {
+	k.onUpdate(() => {
+		if (move === "left") {
 			player.flipX = true;
 			player.direction = "left";
 			player.isIdle = false;
 			player.move(-player.speed, 0);
 			if (player.isGrounded()) playAnimIfNotPlaying(player, "player-walking");
 		}
-		if (moveRight) {
+
+		// Check for right movement
+		if (move === "right") {
 			player.flipX = false;
 			player.direction = "right";
 			player.isIdle = false;
 			player.move(player.speed, 0);
 			if (player.isGrounded()) playAnimIfNotPlaying(player, "player-walking");
 		}
+
+		// Check for jump action
 		if (isJumping && player.isGrounded()) {
 			playAnimIfNotPlaying(player, "player-jump");
 			player.jump(player.jumpforce);
 			player.jumped = true;
 			player.isIdle = false;
 		}
+
+		// Check for sprint action
 		if (isSprinting) {
 			player.speed = 110;
 			player.animSpeed = 2;
@@ -143,10 +148,9 @@ export function touchPlayerMovement(k, player) {
 			player.isSprinting = false;
 		}
 
-		// Reset to idle if no movement or actions are active
-		if (!moveLeft && !moveRight && !isJumping && !isSprinting) {
-			player.isIdle = true;
-			if (player.isGrounded()) playAnimIfNotPlaying(player, "player-idle");
+		// If no movement or actions, set to idle animation
+		if (move === null && player.isGrounded()) {
+			playAnimIfNotPlaying(player, "player-idle");
 		}
 	});
 }

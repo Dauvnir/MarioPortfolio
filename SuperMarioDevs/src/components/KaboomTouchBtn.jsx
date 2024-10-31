@@ -66,14 +66,9 @@ const Wrapper = styled.div`
 		justify-content: left !important;
 	}
 `;
-function dispatchEvents({
-	direction = null,
-	start = null,
-	jump = null,
-	sprint = null,
-} = {}) {
+function dispatchEvents({ direction = null, jump = null, sprint = null } = {}) {
 	const event = new CustomEvent("touch", {
-		detail: { start, direction, jump, sprint },
+		detail: { direction, jump, sprint },
 	});
 
 	document.dispatchEvent(event);
@@ -93,15 +88,8 @@ const KaboomTouchBtn = () => {
 			<div id="arrowBtns">
 				<button
 					id="alignRight"
-					onTouchStart={(e) => {
-						e.preventDefault();
-						dispatchEvents({ direction: "left", start: true });
-					}}
-					onTouchEnd={(e) => {
-						e.preventDefault();
-						dispatchEvents({ direction: "left", start: true });
-						dispatchEvents({ direction: null, start: false });
-					}}
+					onTouchStart={() => dispatchEvents({ direction: "left" })}
+					onTouchEnd={() => dispatchEvents({ direction: null })}
 				>
 					<img
 						src={left}
@@ -110,14 +98,8 @@ const KaboomTouchBtn = () => {
 					/>
 				</button>
 				<button
-					onTouchStart={(e) => {
-						e.preventDefault();
-						dispatchEvents({ direction: "right", start: true });
-					}}
-					onTouchEnd={(e) => {
-						e.preventDefault();
-						dispatchEvents({ direction: null, start: false });
-					}}
+					onTouchStart={() => dispatchEvents({ direction: "right" })}
+					onTouchEnd={() => dispatchEvents({ direction: null })}
 				>
 					<img
 						src={right}
@@ -129,14 +111,8 @@ const KaboomTouchBtn = () => {
 			<div>
 				<button
 					className="alignLeft"
-					onTouchStart={(e) => {
-						e.preventDefault();
-						dispatchEvents({ jump: true });
-					}}
-					onTouchEnd={(e) => {
-						e.preventDefault();
-						dispatchEvents({ jump: false });
-					}}
+					onTouchStart={() => dispatchEvents({ jump: true })}
+					onTouchEnd={() => dispatchEvents({ jump: false })}
 				>
 					<img
 						src={jump}
@@ -146,14 +122,8 @@ const KaboomTouchBtn = () => {
 				</button>
 				<button
 					className="alignLeft"
-					onTouchStart={(e) => {
-						e.preventDefault();
-						dispatchEvents({ sprint: true });
-					}}
-					onTouchEnd={(e) => {
-						e.preventDefault();
-						dispatchEvents({ sprint: false });
-					}}
+					onTouchStart={() => dispatchEvents({ sprint: true })}
+					onTouchEnd={() => dispatchEvents({ sprint: false })}
 				>
 					<img
 						src={sprint}
