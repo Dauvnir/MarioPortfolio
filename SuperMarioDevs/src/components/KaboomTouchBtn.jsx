@@ -66,7 +66,7 @@ const Wrapper = styled.div`
 		justify-content: left !important;
 	}
 `;
-function dispatchEvents({ direction = null, jump = null, sprint = null } = {}) {
+function dispatchEvents({ direction, jump, sprint } = {}) {
 	const event = new CustomEvent("touch", {
 		detail: { direction, jump, sprint },
 	});
