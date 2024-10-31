@@ -120,6 +120,8 @@ export function touchPlayerMovement(k, player) {
 	});
 	// Kaboom update function to handle continuous movement
 	k.onUpdate(() => {
+		let currentAnim = player.curAnim();
+
 		if (move === "left") {
 			player.flipX = true;
 			player.direction = "left";
@@ -158,7 +160,21 @@ export function touchPlayerMovement(k, player) {
 
 		// If no movement or actions, set to idle animation
 		if (move === null && player.isGrounded()) {
+			player.isIdle = true;
 			playAnimIfNotPlaying(player, "player-idle");
+		}
+		if (player.isGrounded() && player.curAnim() !== "player-hold-pole") {
+			player.isIdle = true;
+			playAnimIfNotPlaying(player, "player-idle");
+		}
+
+		if (
+			player.isGrounded() &&
+			player.jumped === true &&
+			currentAnim !== "player-hold-pole"
+		) {
+			playAnimIfNotPlaying(player, "player-idle");
+			player.jumped = false;
 		}
 	});
 }
