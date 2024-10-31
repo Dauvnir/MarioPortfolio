@@ -33,6 +33,11 @@ const Wrapper = styled.div`
 
 			border: none;
 			background: none;
+
+			-webkit-tap-highlight-color: transparent;
+			outline: none;
+			user-select: none;
+
 			img {
 				max-width: 100%;
 				height: 100%;
