@@ -96,51 +96,57 @@ export function setPlayerMovement(k, player) {
 	});
 }
 
-export function touchPlayerMovement(player) {
+export function touchPlayerMovement(k, player) {
+	let moveLeft = false;
+	let moveRight = false;
+	let isJumping = false;
+	let isSprinting = false;
+
 	document.addEventListener("touch", (event) => {
 		const { start, direction, jump, sprint } = event.detail;
-		console.log(event.detail);
-		if (start && direction === "left") {
+
+		if (direction === "left") moveLeft = start;
+		if (direction === "right") moveRight = start;
+		if (jump !== null) isJumping = jump;
+		if (sprint !== null) isSprinting = sprint;
+	});
+
+	// Kaboom update function to handle continuous movement
+	k.update(() => {
+		if (moveLeft) {
 			player.flipX = true;
 			player.direction = "left";
 			player.isIdle = false;
 			player.move(-player.speed, 0);
-			if (player.isGrounded()) {
-				playAnimIfNotPlaying(player, "player-walking");
-			}
+			if (player.isGrounded()) playAnimIfNotPlaying(player, "player-walking");
 		}
-		if (start && direction === "right") {
+		if (moveRight) {
 			player.flipX = false;
 			player.direction = "right";
 			player.isIdle = false;
 			player.move(player.speed, 0);
-			if (player.isGrounded()) {
-				playAnimIfNotPlaying(player, "player-walking");
-			}
+			if (player.isGrounded()) playAnimIfNotPlaying(player, "player-walking");
 		}
-		if (jump) {
+		if (isJumping && player.isGrounded()) {
 			playAnimIfNotPlaying(player, "player-jump");
-			if (player.isGrounded()) {
-				player.jump(player.jumpforce);
-				player.jumped = true;
-				player.isIdle = false;
-			}
+			player.jump(player.jumpforce);
+			player.jumped = true;
+			player.isIdle = false;
 		}
-		if (sprint) {
+		if (isSprinting) {
 			player.speed = 110;
 			player.animSpeed = 2;
 			player.isSprinting = true;
-		}
-
-		if (!start && !jump && !sprint) {
+		} else {
 			player.speed = 70;
 			player.animSpeed = 1;
 			player.isSprinting = false;
-			if (player.direction === null) return;
-			if (player.isGrounded() && player.curAnim() !== "player-hold-pole") {
-				player.isIdle = true;
-				playAnimIfNotPlaying(player, "player-idle");
-			}
+		}
+
+		// Reset to idle if no movement or actions are active
+		if (!moveLeft && !moveRight && !isJumping && !isSprinting) {
+			player.isIdle = true;
+			if (player.isGrounded()) playAnimIfNotPlaying(player, "player-idle");
 		}
 	});
 }
