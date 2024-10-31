@@ -4,6 +4,7 @@ import left from "../assets/inputs/tile_0760.png";
 import right from "../assets/inputs/tile_0758.png";
 import jump from "../assets/inputs/tile_0004.png";
 import sprint from "../assets/inputs/tile_0005.png";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
 	width: 100%;
@@ -46,6 +47,8 @@ const Wrapper = styled.div`
 
 				image-rendering: pixelated;
 				object-fit: contain;
+
+				user-select: none;
 			}
 		}
 		#alignRight {
@@ -78,6 +81,13 @@ function dispatchEvents({
 
 // Define KaboomTouchBtn component
 const KaboomTouchBtn = () => {
+	useEffect(() => {
+		document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+		return () => {
+			document.removeEventListener("contextmenu", (e) => e.preventDefault());
+		};
+	}, []);
 	return (
 		<Wrapper>
 			<div id="arrowBtns">
@@ -96,6 +106,7 @@ const KaboomTouchBtn = () => {
 					<img
 						src={left}
 						alt="left"
+						draggable="false"
 					/>
 				</button>
 				<button
@@ -111,6 +122,7 @@ const KaboomTouchBtn = () => {
 					<img
 						src={right}
 						alt="right"
+						draggable="false"
 					/>
 				</button>
 			</div>
@@ -129,6 +141,7 @@ const KaboomTouchBtn = () => {
 					<img
 						src={jump}
 						alt="jump"
+						draggable="false"
 					/>
 				</button>
 				<button
@@ -145,6 +158,7 @@ const KaboomTouchBtn = () => {
 					<img
 						src={sprint}
 						alt="sprint"
+						draggable="false"
 					/>
 				</button>
 			</div>
