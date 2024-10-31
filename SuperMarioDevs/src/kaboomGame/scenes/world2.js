@@ -118,9 +118,13 @@ export default async function world2(k) {
 		synchroniseHead(k, entities.koopaHead, entities.koopaBody);
 	});
 	k.setGravity(mapHeight - 16 / 10);
-	setPlayerMovement(k, entities.player);
-	touchPlayerMovement(k, entities.player);
 
+	const width = window.innerWidth;
+	if (width >= 1024) {
+		setPlayerMovement(k, entities.player);
+	} else {
+		touchPlayerMovement(k, entities.player);
+	}
 	for (const goomba of entities.goomba) {
 		setMonsterAi(k, goomba, visibleMap, "goomba-walking", map);
 	}

@@ -17,6 +17,7 @@ export async function startWorld(k) {
 	colorizeBackground(k, 99, 160, 253);
 	const mapData = await fetchMapData("/map/startWorld.json");
 	const map = k.add([0, 0]);
+	const width = window.innerWidth;
 	const mapHeight = mapData.height * mapData.tileheight;
 	const entities = {
 		player: null,
@@ -52,8 +53,11 @@ export async function startWorld(k) {
 
 	k.setGravity(mapHeight - 16 / 10);
 
-	setPlayerMovement(k, entities.player);
-	touchPlayerMovement(k, entities.player);
+	if (width >= 1024) {
+		setPlayerMovement(k, entities.player);
+	} else {
+		touchPlayerMovement(k, entities.player);
+	}
 
 	collidingPlayerWithBlockAndShowProfile(
 		k,
