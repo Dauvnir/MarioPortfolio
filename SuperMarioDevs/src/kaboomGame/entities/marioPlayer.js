@@ -106,7 +106,6 @@ export function touchPlayerMovement(k, player) {
 	document.addEventListener("direction", (event) => {
 		const direction = event.detail;
 		move = direction;
-		console.log(move);
 	});
 	document.addEventListener("jump", (event) => {
 		const jump = event.detail;
@@ -120,6 +119,7 @@ export function touchPlayerMovement(k, player) {
 	});
 	// Kaboom update function to handle continuous movement
 	k.onUpdate(() => {
+		if (player.direction === null) return;
 		let currentAnim = player.curAnim();
 
 		if (move === "left") {
@@ -158,12 +158,7 @@ export function touchPlayerMovement(k, player) {
 			player.isSprinting = false;
 		}
 
-		// If no movement or actions, set to idle animation
 		if (move === null && player.isGrounded()) {
-			player.isIdle = true;
-			playAnimIfNotPlaying(player, "player-idle");
-		}
-		if (player.isGrounded() && player.curAnim() !== "player-hold-pole") {
 			player.isIdle = true;
 			playAnimIfNotPlaying(player, "player-idle");
 		}

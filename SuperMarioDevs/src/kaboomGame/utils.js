@@ -435,8 +435,6 @@ export function cameraMove(k, mapData, player) {
 	const canvas = document.querySelector("canvas");
 	const windowHeight = canvas.clientHeight;
 	const windowWidth = canvas.clientWidth;
-	console.log(windowHeight);
-	console.log(windowWidth);
 	const mapHeight = mapData.height * mapData.tileheight;
 	const camPosY = mapHeight / 2 + 14;
 	const mapWidth = mapData.width * mapData.tilewidth;
